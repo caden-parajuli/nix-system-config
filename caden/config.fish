@@ -1,10 +1,17 @@
+# Disable greeting
 set fish_greeting
+
 bind \cH backward-kill-path-component
+
+# Add rust to path
 fish_add_path ~/.cargo/bin
 
 if command -q nix-your-shell
   nix-your-shell fish | source
 end
+
+set -gx DOTFILES ~/nix/caden/dotfiles
+
 
 function denv
   switch (count $argv)
@@ -21,8 +28,15 @@ function denv
   end
 end
 
+# Stow dotfiles
+function stow-dots
+  stow --dir=$DOTFILES --target=$HOME (path basename $DOTFILES/*)
+end
+
+# Rebuild NixOS
 function nixrs
   sudo nixos-rebuild switch --flake ~/nix
+  stow-dots
 end
 
 # Opam init

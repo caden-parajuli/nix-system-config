@@ -1,1 +1,2 @@
+--dir=$HOME/nix/caden/dotfiles
 --target=$HOME

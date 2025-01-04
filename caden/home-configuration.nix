@@ -7,7 +7,14 @@
 }:
 
 rec {
-  catppuccin.cursors.enable = true;
+  catppuccin = {
+    enable = true;
+
+    gtk.enable = false;
+    hyprland.enable = false;
+    hyprlock.enable = false;
+    waybar.enable = false;
+  };
   programs = {
     home-manager.enable = true;
 
@@ -77,7 +84,7 @@ rec {
 
   qt = {
     enable = true;
-    platformTheme.name = "qtct";
+    platformTheme.name = "kvantum";
     style = {
       package = pkgs.catppuccin-kvantum;
       name = "kvantum";
@@ -106,7 +113,6 @@ rec {
       XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_DESKTOP = "Hyprland";
       XDG_SESSION_TYPE = "wayland";
-      QT_QPA_PLATFORMTHEME = "qt5ct";
       MOZ_ENABLE_WAYLAND = "1";
     };
 
@@ -180,7 +186,7 @@ rec {
 
       alacritty
       foot
-      rofi
+      rofi-wayland
       tauon
       inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
       xarchiver

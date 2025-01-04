@@ -9,10 +9,10 @@
         // "hyprland/scratchpad",
         "cpu",
         "memory",
-        "temperature",
+        "temperature"
     ],
     "modules-center": [
-        "hyprland/workspaces",
+        "hyprland/workspaces"
     ],
     "modules-right": [
         "mpd",
@@ -119,7 +119,7 @@
     "backlight": {
         // "device": "acpi_video1",
         "format": "{percent}% {icon}",
-        "format-icons": [""],
+        "format-icons": [""]
     },
     "battery#bat2": {
         "bat": "BAT2"
@@ -185,12 +185,12 @@
             "inhibited-notification": "<span foreground='red'><sup></sup></span>",
             "inhibited-none": "",
             "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-            "dnd-inhibited-none": "",
+            "dnd-inhibited-none": ""
         },
         "return-type": "json",
         "exec-if": "which swaync-client",
         "exec": "swaync-client -swb",
         "on-click": "sleep 0.1 && swaync-client -t",
-        "escape": true,
-    },
+        "escape": true
+    }
 }
