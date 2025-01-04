@@ -16,12 +16,13 @@
     # ./nvidia.nix
   ];
 
-  # Bootloader.
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Virtualisation
   virtualisation.libvirtd.enable = true;
   # virtualisation.virtualbox.host.enable = true;
   users.extraGroups.vboxusers.members = [ "caden" ];
@@ -38,12 +39,8 @@
   # Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "America/New_York";
-
-  # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
@@ -69,11 +66,6 @@
   # Enable store optimization
   nix.optimise.automatic = true;
 
-  # Groups
-  users.groups = {
-    # www-data = {};
-  };
-
   # Define user accounts.
   users.mutableUsers = false;
   users.users.caden = {
@@ -93,10 +85,9 @@
     hashedPassword = "$y$j9T$ap.w7FUG2UQY5svZmhmum0$hmvi2xmIdsO7fVQ50u1c0fY/MzwRou3GdGeygh/O9JA";
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile.
+  # Packages installed in system profile.
+  nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
     lshw
     fish
@@ -132,7 +123,6 @@
   ];
 
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
-  programs.mtr.enable = true;
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
@@ -142,7 +132,10 @@
   programs.wireshark.enable = true;
 
   # Hyprland
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
+  };
   programs.hyprlock.enable = true;
 
   # Use fish

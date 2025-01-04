@@ -7,7 +7,7 @@
 }:
 
 rec {
-  catppuccin.pointerCursor.enable = true;
+  catppuccin.cursors.enable = true;
   programs = {
     home-manager.enable = true;
 
@@ -18,10 +18,7 @@ rec {
       withNodeJs = true;
       withPython3 = true;
       extraLuaPackages = ps: [ ps.luautf8 ];
-      extraPackages = [ pkgs.cornelis ];
-      plugins = [
-        { plugin = pkgs.vimPlugins.cornelis; }
-      ];
+      extraPackages = [ ];
     };
 
     fish = {
@@ -50,6 +47,18 @@ rec {
         {
           name = "plugin-git";
           src = pkgs.fishPlugins.plugin-git.src;
+        }
+        {
+          name = "sponge";
+          src = pkgs.fishPlugins.sponge.src;
+        }
+        {
+          name = "done";
+          src = pkgs.fishPlugins.done.src;
+        }
+        {
+          name = "z";
+          src = pkgs.fishPlugins.z.src;
         }
       ];
     };
@@ -81,8 +90,6 @@ rec {
       name = "Dracula";
       package = pkgs.dracula-theme;
     };
-    # catppuccin.enable = true;
-    # catppuccin.icon.enable = true;
   };
 
   fonts.fontconfig.enable = true;
@@ -103,14 +110,6 @@ rec {
       MOZ_ENABLE_WAYLAND = "1";
     };
 
-    # # 
-    # # Dotfiles
-    # # 
-    #
-    # file = {
-    #   ".config/hypr".source = ./. + "/dotfiles/.config/hypr";
-    # };
-
     packages = with pkgs; [
       #
       # Dev
@@ -121,7 +120,6 @@ rec {
       gnumake
       tree-sitter
       vscode-langservers-extracted
-      emacs
       stow
 
       # C
@@ -151,19 +149,16 @@ rec {
       python312Packages.pygments
 
       # Nim
-      # nim
-      # nimlangserver
+      nim
+      nimlangserver
 
+      # Zig
       zig.packages.${pkgs.system}.master
 
       # Haskell
       haskellPackages.haskell-language-server
       haskellPackages.stack
       haskell.compiler.ghc96
-      # Agda
-      (agda.withPackages [
-        agdaPackages.standard-library
-      ])
 
       texlab
 
@@ -176,17 +171,8 @@ rec {
       valgrind
 
       # Text editing
-      # neovim-unwrapped
+      stow
       appflowy
-
-      #Gaming
-      wine-staging
-      wine64Packages.waylandFull
-      winetricks
-      protonup-qt
-      bottles
-      fuse-overlayfs
-      bubblewrap
 
       #
       # GUI Apps
@@ -212,6 +198,15 @@ rec {
       # For zathura
       xdotool
 
+      #Gaming
+      wine-staging
+      wine64Packages.waylandFull
+      winetricks
+      protonup-qt
+      bottles
+      fuse-overlayfs
+      bubblewrap
+
       #
       # Desktop tools
       #
@@ -219,7 +214,7 @@ rec {
       # For Hyprland
       xdg-desktop-portal-hyprland
       hyprpicker
-      # hyprsunset # TODO uncomment this after updating nix
+      hyprsunset
       wl-clipboard-rs
       hyprls
       # Screenshot
@@ -241,8 +236,6 @@ rec {
       catppuccin-qt5ct
       libsForQt5.qtstyleplugin-kvantum
       kdePackages.qtstyleplugin-kvantum
-      catppuccin-gtk
-      catppuccin-cursors.mochaMauve
 
       # Daemons
       nginx
@@ -271,7 +264,7 @@ rec {
       grc
       yt-dlp
       comma
-      zoxide
+      # zoxide
       tlrc
       git-open
       xxh
@@ -281,15 +274,11 @@ rec {
       dig
       inetutils
 
-      # Fish Plugins
-      fishPlugins.puffer
-
       # Fonts
-      fira-code-nerdfont
+      nerd-fonts.fira-code
 
       # Misc
       xdg-utils
-      vulkan-tools
       ventoy
     ];
   };

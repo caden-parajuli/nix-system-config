@@ -27,5 +27,3 @@ end
 
 # Opam init
 source /home/caden/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true
-
-zoxide init fish | source
