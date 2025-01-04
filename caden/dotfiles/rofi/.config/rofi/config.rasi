@@ -149,8 +149,4 @@ configuration {
       sorting-method:    "name";
   }
 }
-
-/* @theme "purple" */
-/* @theme "Arc-Dark" */
-/* @theme "fancy2" */
-@theme "myfancy"
+@theme "fancy"
