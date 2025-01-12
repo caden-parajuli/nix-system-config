@@ -6,13 +6,13 @@ return {
             require('mini.ai').setup()
         end
     },
-    {
-        'echasnovski/mini.surround',
-        version = false,
-        config = function()
-            require('mini.surround').setup()
-        end
-    },
+    -- {
+    --     'echasnovski/mini.surround',
+    --     version = false,
+    --     config = function()
+    --         require('mini.surround').setup()
+    --     end
+    -- },
     { 'echasnovski/mini.bracketed',
         version = false,
         config = function ()

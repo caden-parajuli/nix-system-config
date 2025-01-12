@@ -72,15 +72,17 @@
     isNormalUser = true;
     description = "Caden Parajuli";
     extraGroups = [
+      "adbusers"
+      "dialout"
+      "docker"
+      "kvm"
       "networkmanager"
-      "wireshark"
       "test"
       "uinput"
+      "uucp"
       "video"
       "wheel"
-      "dialout"
-      "uucp"
-      "docker"
+      "wireshark"
     ];
     hashedPassword = "$y$j9T$ap.w7FUG2UQY5svZmhmum0$hmvi2xmIdsO7fVQ50u1c0fY/MzwRou3GdGeygh/O9JA";
   };
@@ -122,11 +124,22 @@
     transmission_4-qt6
   ];
 
+  # udev rules
+  services.udev = {
+    enable = true;
+    packages = with pkgs; [
+      android-udev-rules
+    ];
+  };
+
   # Some programs need SUID wrappers, can be configured further or are started in user sessions.
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
   };
+
+  # ADB for Android/AOSP-based OSs
+  programs.adb.enable = true;
 
   # Wireshark
   programs.wireshark.enable = true;

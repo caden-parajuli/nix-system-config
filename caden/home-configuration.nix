@@ -15,18 +15,19 @@ rec {
     hyprlock.enable = false;
     waybar.enable = false;
   };
+
   programs = {
     home-manager.enable = true;
 
-    neovim = {
-      enable = true;
-      package = pkgs.neovim-unwrapped;
-      defaultEditor = true;
-      withNodeJs = true;
-      withPython3 = true;
-      extraLuaPackages = ps: [ ps.luautf8 ];
-      extraPackages = [ ];
-    };
+    # neovim = {
+    #   enable = true;
+    #   package = pkgs.neovim-unwrapped;
+    #   defaultEditor = true;
+    #   withNodeJs = true;
+    #   withPython3 = true;
+    #   extraLuaPackages = ps: [ ps.luautf8 ];
+    #   extraPackages = [ ];
+    # };
 
     fish = {
       enable = true;
@@ -116,6 +117,12 @@ rec {
       MOZ_ENABLE_WAYLAND = "1";
     };
 
+    pointerCursor = {
+      package = pkgs.catppuccin-cursors.mochaMauve;
+      name = "Catppuccin-Mocha-Mauve-Cursors";
+      size = 16;
+    };
+
     packages = with pkgs; [
       #
       # Dev
@@ -177,6 +184,7 @@ rec {
       valgrind
 
       # Text editing
+      neovim
       stow
       appflowy
 
