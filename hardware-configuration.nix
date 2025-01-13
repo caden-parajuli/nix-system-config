@@ -25,21 +25,6 @@
   boot.extraModulePackages = [ ];
   boot.kernelParams = [ "reboot=acpi" ];
 
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/c8416106-4120-410f-afcb-f1286cde1134";
-    fsType = "btrfs";
-    options = [ "subvol=@" ];
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/B014-C5CC";
-    fsType = "vfat";
-    options = [
-      "fmask=0022"
-      "dmask=0022"
-    ];
-  };
-
   swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

@@ -8,12 +8,16 @@
   };
 
   inputs = {
-    # NixOS official package source, using the nixos-unstable branch here
+    # Unstable
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs"; # Use system packages list where available
     };
+
+    disko.url = "github:nix-community/disko";
+    disko.inputs.nixpkgs.follows = "nixpkgs";
 
     firefox.url = "github:nix-community/flake-firefox-nightly/master";
 
@@ -27,9 +31,10 @@
   outputs =
     inputs@{
       nixpkgs,
-      catppuccin,
       home-manager,
+      disko,
       yazi,
+      catppuccin,
       zig,
       ...
     }:
@@ -42,7 +47,10 @@
             inherit inputs;
           };
           modules = [
-            ./configuration.nix
+            ./flakinator.nix
+
+            disko.nixosModules.disko
+            ./disko-config.nix
 
             catppuccin.nixosModules.catppuccin
 
