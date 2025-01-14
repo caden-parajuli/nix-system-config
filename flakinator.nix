@@ -11,9 +11,8 @@
 
 {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    # ./nvidia.nix
+    ./greetd.nix
   ];
 
   # Bootloader
@@ -87,7 +86,6 @@
     hashedPassword = "$y$j9T$ap.w7FUG2UQY5svZmhmum0$hmvi2xmIdsO7fVQ50u1c0fY/MzwRou3GdGeygh/O9JA";
   };
 
-
   # Packages installed in system profile.
   nixpkgs.config.allowUnfree = true;
   environment.systemPackages = with pkgs; [
@@ -100,7 +98,8 @@
     wayland
     hyprpaper
     hypridle
-    # hyprpolkitagent # Needs nix update
+    hyprpolkitagent # Needs nix update
+    hyprland-qtutils
 
     openconnect
     pulseaudio
@@ -118,8 +117,8 @@
     man-pages-posix
 
     # Games
-    protonup
-    lutris
+    # protonup
+    # lutris
 
     transmission_4-qt6
   ];
@@ -145,8 +144,18 @@
   programs.wireshark.enable = true;
 
   # Hyprland
+  programs.uwsm = {
+    enable = true;
+    waylandCompositors = {
+      hyprland = {
+        prettyName = "Hyprland";
+        binPath = "/run/current-system/sw/bin/Hyprland";
+      };
+    };
+  };
   programs.hyprland = {
     enable = true;
+    withUWSM = true;
     portalPackage = pkgs.xdg-desktop-portal-hyprland;
   };
   programs.hyprlock.enable = true;
@@ -166,12 +175,12 @@
   };
 
   # Games
-  programs.steam = {
-    enable = true;
-    gamescopeSession.enable = true;
-  };
-  programs.gamemode.enable = true;
-  programs.gamescope.enable = true;
+  # programs.steam = {
+  #   enable = true;
+  #   gamescopeSession.enable = true;
+  # };
+  # programs.gamemode.enable = true;
+  # programs.gamescope.enable = true;
 
   #
   # Services

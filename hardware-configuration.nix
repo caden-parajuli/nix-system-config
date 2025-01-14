@@ -10,20 +10,44 @@
 }:
 
 {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+  ];
 
   boot.initrd.availableKernelModules = [
-    "xhci_pci"
-    "ahci"
     "nvme"
-    "usb_storage"
-    "sd_mod"
+    "ehci_pci"
+    "xhci_pci_renesas"
+    "xhci_pci"
     "rtsx_pci_sdmmc"
   ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" "kvm-amd" ];
+  boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
-  boot.kernelParams = [ "reboot=acpi" ];
+
+  # fileSystems."/" =
+  #   { device = "/dev/disk/by-uuid/904f78be-1027-4fe2-9b5c-98d19d6dde12";
+  #     fsType = "btrfs";
+  #     options = [ "subvol=root/active" ];
+  #   };
+  #
+  # fileSystems."/nix" =
+  #   { device = "/dev/disk/by-uuid/904f78be-1027-4fe2-9b5c-98d19d6dde12";
+  #     fsType = "btrfs";
+  #     options = [ "subvol=nix" ];
+  #   };
+  #
+  # fileSystems."/home" =
+  #   { device = "/dev/disk/by-uuid/904f78be-1027-4fe2-9b5c-98d19d6dde12";
+  #     fsType = "btrfs";
+  #     options = [ "subvol=home/active" ];
+  #   };
+  #
+  # fileSystems."/boot" =
+  #   { device = "/dev/disk/by-uuid/85B4-ACA4";
+  #     fsType = "vfat";
+  #     options = [ "fmask=0022" "dmask=0022" ];
+  #   };
 
   swapDevices = [ ];
 
@@ -32,14 +56,17 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp3s0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.docker0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.enp2s0f0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
-  # From https://github.com/NixOS/nixos-hardware/blob/master/dell/precision/7520/default.nix
-  # available cpufreq governors: performance powersave
-  # The powersave mode locks the cpu to a 900mhz frequency which is not ideal
-  powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.amdgpu.initrd.enable = true;
+
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 }

@@ -98,6 +98,11 @@ rec {
       name = "Dracula";
       package = pkgs.dracula-theme;
     };
+    cursorTheme = {
+      package = pkgs.catppuccin-cursors.mochaMauve;
+      name = "catppuccin-mocha-mauve-cursors";
+      size = 16;
+    };
   };
 
   fonts.fontconfig.enable = true;
@@ -119,7 +124,7 @@ rec {
 
     pointerCursor = {
       package = pkgs.catppuccin-cursors.mochaMauve;
-      name = "Catppuccin-Mocha-Mauve-Cursors";
+      name = "catppuccin-mocha-mauve-cursors";
       size = 16;
     };
 

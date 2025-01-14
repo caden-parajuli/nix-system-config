@@ -39,5 +39,14 @@ function nixrs
   stow-dots
 end
 
+function hyprlaunch
+  exec uwsm start hyprland.desktop
+end
+
+if uwsm check may-start
+   and uwsm select
+  hyprlaunch
+end
+
 # Opam init
 source /home/caden/.opam/opam-init/init.fish > /dev/null 2> /dev/null; or true

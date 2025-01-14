@@ -27,7 +27,6 @@
   "mini.ai": { "branch": "main", "commit": "ebb04799794a7f94628153991e6334c3304961b8" },
   "mini.align": { "branch": "main", "commit": "e715137aece7d05734403d793b8b6b64486bc812" },
   "mini.bracketed": { "branch": "main", "commit": "1d1c774b5dcc9a55af3bfbd977571c31c4054223" },
-  "mini.surround": { "branch": "main", "commit": "aa5e245829dd12d8ff0c96ef11da28681d6049aa" },
   "neogen": { "branch": "main", "commit": "dd0301bfba1f83a3bc009b5430fce7aa3cee6941" },
   "none-ls.nvim": { "branch": "main", "commit": "00421b9dc7a4d132ca74cfb4c7e8030d05d6fd0b" },
   "nvim-FeMaco.lua": { "branch": "main", "commit": "96bbf843595dbe865838b3f2484b73557f34700c" },
