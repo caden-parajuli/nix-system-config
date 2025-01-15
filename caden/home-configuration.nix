@@ -7,6 +7,10 @@
 }:
 
 rec {
+  nix.settings = {
+    extra-substituters = [ "https://yazi.cachix.org" ];
+    extra-trusted-public-keys = [ "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k=" ];
+  };
   catppuccin = {
     enable = true;
 
@@ -18,16 +22,6 @@ rec {
 
   programs = {
     home-manager.enable = true;
-
-    # neovim = {
-    #   enable = true;
-    #   package = pkgs.neovim-unwrapped;
-    #   defaultEditor = true;
-    #   withNodeJs = true;
-    #   withPython3 = true;
-    #   extraLuaPackages = ps: [ ps.luautf8 ];
-    #   extraPackages = [ ];
-    # };
 
     fish = {
       enable = true;
@@ -115,11 +109,13 @@ rec {
     sessionPath = [ "${homeDirectory}/.cargo/bin" ];
 
     sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${homeDirectory}/.steam/root/compatibilitytools.d";
+      # STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${homeDirectory}/.steam/root/compatibilitytools.d";
       XDG_CURRENT_DESKTOP = "Hyprland";
       XDG_SESSION_DESKTOP = "Hyprland";
       XDG_SESSION_TYPE = "wayland";
       MOZ_ENABLE_WAYLAND = "1";
+
+      EDITOR = "nvim";
     };
 
     pointerCursor = {
@@ -271,19 +267,17 @@ rec {
       # Terminal apps
       #
 
-      yazi.packages.${pkgs.system}.default
       fish
-      parted
+      comma
       bat
-      psmisc
+      glow
       ripgrep
       ripgrep-all
       ran
       jq
       grc
       yt-dlp
-      comma
-      # zoxide
+      psmisc
       tlrc
       git-open
       xxh
