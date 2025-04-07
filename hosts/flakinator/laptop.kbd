@@ -1,0 +1,130 @@
+(defcfg
+  process-unmapped-keys yes
+)
+
+(defsrc
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]    \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt           spc            ralt rctl
+)
+
+;; Default to Colemak
+(deflayer colemak-dh
+  @grl 1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @tnm q    @wnv f    p    b    j    l    u    y    ;    [    ]    \
+  @cap @hma @hmr @hms @hmt g    m    @hmn @hme @hmi @hmo '    ret
+  @shn x    c    d    v    z    k    h    ,    .    /    rsft
+  lctl lmet lalt        @spcsym           @ipa rctl
+)
+
+
+;; Only need this if someome else needs to use my computer or for games
+(deflayer qwerty
+  @grl 1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  @tnm q    w    e    r    t    y    u    i    o    p    [    ]    \
+  @cap a    s    d    f    g    h    j    k    l    ;    '    ret
+  @shn z    x    c    v    b    n    m    ,    .    /    rsft
+  lctl lmet lalt          spc             ralt rctl
+)
+
+;; Symbol layer
+(deflayer symbols
+  _    _    _    _    _    _    _    _    _    _    _    _    _    del
+  _    @oct S-[  S-]  @dqu @dol @car =    +    -    @per _    _    S-\
+  @cap @exc [    @rbr @com /    \    @dot @lpa @rpa ;    _    _
+  @shn @que @at  @und @and grv  @ast @col @lan @ran @que _
+  _    _    _              _              _    _
+)
+
+(deflayer nav
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    @oct [    ]    _    @dol @car =    +    -    @per _    _    _
+  @cap _    _    _    _    _    left down up   rght _    0    _
+  @shn _    _    .    .    0    ,    ,    _    _    _    _
+  _    _    _             spc             _    _
+)
+
+(deflayer ipa-layer
+  _    1    @ʌ   @ʒ   4    5    6    7    8    9    0    _    _    _
+  _    q    w    f    @ʔ   @β   j    l    @ʊ   y    _    _    _    _
+  _    @ɑ   @ɹ   @ʃ   @θ   g    m    @ŋ   @ɛ   @ɪ   @ɔ   _    _
+  _    x    c    @ð   v    z    k    h    _    _    _    _
+  _    _    _              _              _    _
+)
+ 
+
+;; Tap time is how fast you need to press it twice to make the tap action hold
+;; Hold time is how long you need to hold to activate the hold action
+(defvar
+  hr-tap-time 200
+  hr-hold-time 200
+)
+
+(defalias
+  cmk (layer-switch colemak-dh)
+  qwr (layer-switch qwerty)
+  grl (tap-hold 160 160 grv (layer-toggle layers))
+  ipa (tap-hold-release 160 160 ralt (layer-toggle ipa-layer))
+
+  cap (tap-hold-press 140 140 bspc lctl)
+  spcsym (tap-hold-release 120 140 spc (layer-toggle symbols))
+  shn (tap-hold-press 180 180 ret lsft)
+  tnm (tap-hold-press 200 200 tab (layer-toggle nav))
+  wnv (tap-hold-release 210 210 w (layer-toggle nav))
+
+  hma (tap-hold $hr-tap-time $hr-hold-time a lmet)
+  hmo (tap-hold $hr-tap-time $hr-hold-time o rmet)
+  hmr (tap-hold $hr-tap-time $hr-hold-time r lalt)
+  hmi (tap-hold $hr-tap-time $hr-hold-time i ralt)
+  hms (tap-hold $hr-tap-time $hr-hold-time s lsft)
+  hme (tap-hold $hr-tap-time $hr-hold-time e rsft)
+  hmt (tap-hold $hr-tap-time $hr-hold-time t lctl)
+  hmn (tap-hold $hr-tap-time $hr-hold-time n rctl)
+
+  lpa (tap-hold $hr-tap-time $hr-hold-time S-9 lsft)  ;;  ( or shift
+  rbr (tap-hold $hr-tap-time $hr-hold-time ] lsft)    ;;  ] or shift
+  com (tap-hold $hr-tap-time $hr-hold-time , lctl)    ;;  , or ctrl
+  dot (tap-hold $hr-tap-time $hr-hold-time . lctl)    ;;  . or ctrl
+  und S--    ;;  _
+  col S-;    ;;  :
+  rpa S-0    ;;  )
+  lcu S-lbrc ;;  {
+  rcu S-rbrc ;;  }
+  lan S-,    ;;  <
+  ran S-.    ;;  >
+  dqu S-'    ;;  "
+  ast S-8    ;;  *
+  and S-7    ;;  &
+  car S-6    ;;  ^
+  per S-5    ;;  %
+  dol S-4    ;;  $
+  oct S-3    ;;  #
+  at  S-2    ;;  @
+  exc S-1    ;;  !
+  que S-/    ;;  ?
+
+  ɑ (unicode ɑ)
+  β (unicode β)
+  ɛ (unicode ɛ)
+  ɪ (unicode ɪ)
+  ʊ (unicode ʊ)
+  ɔ (unicode ɔ)
+  ʌ (unicode ʌ)
+  θ (unicode θ)
+  ʃ (unicode ʃ)
+  ʒ (unicode ʒ)
+  ɹ (unicode ɹ)
+  ʔ (unicode ʔ)
+  ð (unicode ð)
+  ŋ (unicode ŋ)
+)
+
+(deflayer layers
+  _    @qwr @cmk lrld _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _              _              _    _
+)

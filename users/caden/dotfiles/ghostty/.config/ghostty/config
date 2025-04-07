@@ -1,0 +1,16 @@
+font-family = "FiraCode Nerd Font"
+
+theme = catppuccin-mocha
+resize-overlay = never
+
+# Cursor
+cursor-style = block
+shell-integration-features = no-cursor
+cursor-invert-fg-bg = true
+cursor-style-blink = false
+
+# Hide mouse
+mouse-hide-while-typing = true
+
+# Keybindings
+keybind = alt+t=new_window
