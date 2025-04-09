@@ -9,6 +9,8 @@
   imports = [
     ./hardware-configuration.nix
     ./age.nix
+
+    ./modules/lang-servers.nix
   ];
 
   # Bootloader
@@ -104,11 +106,16 @@
     coreutils
     git
     curl
-    vim
-    neovim
     stow
 
+    # Editing
+    vim
+    neovim
+    tree-sitter
+
+    # Dev
     pkg-config
+    gcc
 
     # Desktop streaming
     wayland
@@ -141,8 +148,25 @@
 
   # Use fish
   users.defaultUserShell = pkgs.fish;
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    interactiveShellInit = (builtins.readFile ./config.fish);
+    shellAbbrs = {
+      sctl = "systemctl";
+      ssctl = "sudo systemctl";
+      gcam = "git commit --amend --no-edit";
+      gst = "git status";
+      gp = "git push";
+      gf = "git fetch";
+      gaa = "git add -A";
+    };
+    shellAliases = {
+      nv = "nvim";
+      n = "nvim";
+    };
+  };
   documentation.man.generateCaches = false; # fix annoyingly slow rebuilds due to fish default
+
 
   #
   # Services
