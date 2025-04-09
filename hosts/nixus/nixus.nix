@@ -104,7 +104,6 @@
 
     # Core utilities
     coreutils
-    git
     curl
     stow
 
@@ -114,8 +113,10 @@
     tree-sitter
 
     # Dev
+    git
     pkg-config
     gcc
+    delta
 
     # Desktop streaming
     wayland
@@ -166,6 +167,10 @@
     };
   };
   documentation.man.generateCaches = false; # fix annoyingly slow rebuilds due to fish default
+
+  environment.sessionVariables = {
+    EDITOR = "nvim";
+  };
 
 
   #
