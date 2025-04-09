@@ -1,0 +1,2 @@
+--dir=$HOME/nix/hosts/nixus/users/caden/dotfiles
+--target=$HOME

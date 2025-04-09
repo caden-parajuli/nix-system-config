@@ -118,7 +118,7 @@
             disko.nixosModules.disko
             ./hosts/nixus/disko-config.nix
 
-            # agenix.nixosModules.default
+            agenix.nixosModules.default
           ];
         };
       };

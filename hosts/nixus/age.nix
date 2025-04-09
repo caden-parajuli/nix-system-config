@@ -5,6 +5,7 @@
 {
   age = {
     secrets = {
+      cadenPasswordHash.file = ./secrets/cadenPasswordHash.age;
     };
 
     identityPaths = [

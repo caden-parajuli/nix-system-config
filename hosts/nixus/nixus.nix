@@ -8,7 +8,7 @@
 {
   imports = [
     ./hardware-configuration.nix
-    # ./age.nix
+    ./age.nix
   ];
 
   # Bootloader
@@ -28,6 +28,7 @@
   networking.networkmanager.enable = true;
   networking.hostName = "nixus";
   networking.hostId = "2dc668d3";
+  networking.usePredictableInterfaceNames = true;
 
   users.groups.nginx = { };
   users.users.nginx = {
@@ -73,8 +74,7 @@
   users.users.caden = {
     isNormalUser = true;
     description = "Caden Parajuli";
-    hashedPassword = "$6$hhJulPyNEw9yGSoT$43QfQOucOm3wTFHHuxmj5hm0kOCV68jJ.GU95OTKIgvpjE4v6J.rALbudKjfwUh4QTXVhOHjLWiJzjJ.8oKUk1";
-    # hashedPasswordFile = config.age.secrets.cadenPasswordHash.path;
+    hashedPasswordFile = config.age.secrets.cadenPasswordHash.path;
     extraGroups = [
       "adbusers"
       "dialout"
@@ -104,6 +104,9 @@
     coreutils
     git
     curl
+    vim
+    neovim
+    stow
 
     pkg-config
 
@@ -111,7 +114,7 @@
     wayland
 
     # Age secrets
-    # inputs.agenix.packages."${system}".default
+    inputs.agenix.packages."${system}".default
 
     # Docker
     devcontainer
@@ -155,9 +158,13 @@
   };
 
   # SSH Server
-  services.openssh.enable = true;
-  users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoquXO3IT2y+qCa03Gwd2ooW6UKrd26T+KHtrn2jcbA"
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+  };
+  users.users.caden.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoquXO3IT2y+qCa03Gwd2ooW6UKrd26T+KHtrn2jcbA caden.parajuli@member.fsf.org"
   ];
 
 
