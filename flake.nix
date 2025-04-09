@@ -85,6 +85,7 @@
             ./hosts/flakinator/disko-config.nix
 
             agenix.nixosModules.default
+
             catppuccin.nixosModules.catppuccin
 
             home-manager.nixosModules.home-manager
@@ -97,10 +98,27 @@
               home-manager.backupFileExtension = "backup";
 
               home-manager.users.caden.imports = [
-                ./users/caden/home.nix
+                ./hosts/flakinator/users/caden/home.nix
                 catppuccin.homeManagerModules.catppuccin
               ];
             }
+          ];
+        };
+
+        nixus = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          specialArgs = {
+            inherit inputs;
+          };
+
+          modules = [
+            ./hosts/nixus/nixus.nix
+
+            disko.nixosModules.disko
+            ./hosts/nixus/disko-config.nix
+
+            # agenix.nixosModules.default
           ];
         };
       };

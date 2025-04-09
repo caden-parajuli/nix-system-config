@@ -4,7 +4,7 @@ in
 {
   disko.devices = {
     disk = {
-      ${rawdisk1} = {
+      root = {
         device = "${rawdisk1}" ;
         type = "disk";
         content = {
@@ -19,66 +19,26 @@ in
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
+              mountOptions = [ "umask=0077" ];
               };
             };
             swap = {
               label = "swap";
-              size = "16G"; # SWAP - Do not Delete this comment
+              size = "32G"; # SWAP - Do not Delete this comment
               content = {
                 type = "swap";
                 resumeDevice = true;
               };
             };
             root = {
-              label = "rootfs";
-              name = "btrfs";
               size = "100%";
               content = {
-                type = "btrfs";
-                extraArgs = [ "-f" ];
-                subvolumes = {
-                  "/root" = {
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/root/active" = {
-                    mountpoint = "/";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/root/snapshots" = {
-                    mountpoint = "/.snapshots";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/home" = {
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/home/active" = {
-                    mountpoint = "/home";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/home/snapshots" = {
-                    mountpoint = "/home/.snapshots";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/nix" = {
-                    mountpoint = "/nix";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/var_local" = {
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/var_local/active" = {
-                    mountpoint = "/var/local";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/var_local/snapshots" = {
-                    mountpoint = "/var/local/.snapshots";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                  "/var_log" = {
-                    mountpoint = "/var/log";
-                    mountOptions = [ "compress=zstd" "noatime" ];
-                  };
-                };
+                type = "filesystem";
+                format = "ext4";
+                mountpoint = "/";
+                mountOptions = [
+                  "noatime"
+                ];
               };
             };
           };

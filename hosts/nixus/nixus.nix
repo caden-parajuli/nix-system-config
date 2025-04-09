@@ -8,20 +8,13 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./greetd.nix
-    ./age.nix
+    # ./age.nix
   ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "ntfs" ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Virtualisation
-  programs.virt-manager.enable = true;
-  virtualisation.libvirtd.enable = true;
-  users.groups.libvirtd.members = [ "caden" ];
   # Docker
   virtualisation.docker = {
     enable = true;
@@ -33,10 +26,8 @@
 
   # Networking
   networking.networkmanager.enable = true;
-  networking.hostName = "flakinator";
-  networking.hosts = {
-    "136.167.254.208" = [ "nixus.bc.edu" ];
-  };
+  networking.hostName = "nixus";
+  networking.hostId = "2dc668d3";
 
   users.groups.nginx = { };
   users.users.nginx = {
@@ -82,7 +73,8 @@
   users.users.caden = {
     isNormalUser = true;
     description = "Caden Parajuli";
-    hashedPasswordFile = config.age.secrets.cadenPasswordHash.path;
+    hashedPassword = "$6$hhJulPyNEw9yGSoT$43QfQOucOm3wTFHHuxmj5hm0kOCV68jJ.GU95OTKIgvpjE4v6J.rALbudKjfwUh4QTXVhOHjLWiJzjJ.8oKUk1";
+    # hashedPasswordFile = config.age.secrets.cadenPasswordHash.path;
     extraGroups = [
       "adbusers"
       "dialout"
@@ -102,42 +94,24 @@
     ];
   };
 
-  # Packages installed in system profile.
-  nixpkgs.config.allowUnfree = true;
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-27.3.11"
-  ];
-
   environment.systemPackages = with pkgs; [
     lshw
     fish
     nix-your-shell
-    devenv
     nix-prefetch
 
-    config.boot.kernelPackages.perf
+    # Core utilities
+    coreutils
+    git
+    curl
 
     pkg-config
 
-    # Desktop
+    # Desktop streaming
     wayland
-    hyprpaper
-    hypridle
-    hyprpolkitagent
-    hyprland-qtutils
-    xdg-desktop-portal
-
-    pulseaudio
-
-    # Networking
-    wireshark
-    openconnect
-
-    # Disks
-    gparted
 
     # Age secrets
-    inputs.agenix.packages."${system}".default
+    # inputs.agenix.packages."${system}".default
 
     # Docker
     devcontainer
@@ -146,18 +120,13 @@
     man-pages
     man-pages-posix
 
-    # Games
-    # protonup
-    # lutris
-
-    transmission_4-qt6
+    transmission_4
   ];
 
   # udev rules
   services.udev = {
     enable = true;
     packages = with pkgs; [
-      android-udev-rules
     ];
   };
 
@@ -167,64 +136,16 @@
     enableSSHSupport = true;
   };
 
-  # ADB for Android/AOSP-based OSs
-  programs.adb.enable = true;
-
-  # Wireshark
-  programs.wireshark.enable = true;
-
-  # Hyprland
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      hyprland = {
-        prettyName = "Hyprland";
-        binPath = "/run/current-system/sw/bin/Hyprland";
-      };
-    };
-  };
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-  };
-  programs.hyprlock.enable = true;
-
   # Use fish
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
   documentation.man.generateCaches = false; # fix annoyingly slow rebuilds due to fish default
 
-  # Use Kanata for laptop keyboard
-  services.kanata = {
-    enable = true;
-    package = pkgs.kanata-with-cmd;
-    keyboards.laptop = {
-      devices = [ "/dev/input/by-path/platform-i8042-serio-0-event-kbd" ];
-      configFile = (./. + "/laptop.kbd");
-    };
-  };
-
-  # Games
-  # programs.steam = {
-  #   enable = true;
-  #   gamescopeSession.enable = true;
-  # };
-  # programs.gamemode.enable = true;
-  # programs.gamescope.enable = true;
-
   #
   # Services
   #
 
-  # TLP Power saving
-  services.tlp.enable = true;
-  services.tlp.settings = {
-    # START_CHARGE_THRESH_BAT0 = 40; # 40 and bellow it starts to charge
-    STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
-  };
-
-  # Pipewire audio
+  # Pipewire (for wayland streaming)
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -233,31 +154,19 @@
     pulse.enable = true;
   };
 
-  services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchExternalPower = "suspend";
-  };
+  # SSH Server
+  services.openssh.enable = true;
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoquXO3IT2y+qCa03Gwd2ooW6UKrd26T+KHtrn2jcbA"
+  ];
 
-  services.printing.enable = true;
-
-  systemd = {
-    targets = {
-      hibernate = {
-        enable = false;
-        unitConfig.DefaultDependencies = "no";
-      };
-      "hybrid-sleep" = {
-        enable = false;
-        unitConfig.DefaultDependencies = "no";
-      };
-    };
-  };
 
   networking.firewall.allowedTCPPorts = [
     57766
     8080
     8000
     80
+    22
   ];
   networking.firewall.allowedUDPPorts = [
     57766
