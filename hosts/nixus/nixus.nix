@@ -194,6 +194,7 @@
   };
   users.users.caden.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJoquXO3IT2y+qCa03Gwd2ooW6UKrd26T+KHtrn2jcbA caden.parajuli@member.fsf.org"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMjzvj8Do87gA5cXv2iH3WispS/MQDE2XBX1F2ylwR9q u0_a178"
   ];
 
 
