@@ -1,6 +1,7 @@
 font-family = "FiraCode Nerd Font"
 
-theme = catppuccin-mocha
+# theme = catppuccin-mocha
+theme = Dracula
 resize-overlay = never
 
 # Cursor

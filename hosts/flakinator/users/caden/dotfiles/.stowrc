@@ -1,2 +1,2 @@
---dir=$HOME/nix/caden/dotfiles
+--dir=$HOME/nix/hosts/flakinator/users/caden/dotfiles
 --target=$HOME
