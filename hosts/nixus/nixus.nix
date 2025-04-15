@@ -11,6 +11,9 @@
     ./age.nix
 
     ./modules/lang-servers.nix
+    ./modules/webapps.nix
+    ./modules/mail.nix
+    ./modules/zfs.nix
   ];
 
   # Bootloader
@@ -117,6 +120,9 @@
     pkg-config
     gcc
     delta
+
+    # Administration
+    tmux
 
     # Desktop streaming
     wayland

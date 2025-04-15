@@ -1,6 +1,6 @@
 let
-  harddisk1 = "/dev/sda";
-  harddisk2 = "/dev/sdb";
+  harddisk1 = "/dev/disk/by-id/ata-HITACHI_HUA723020ALA640_YGKMG0WG";
+  harddisk2 = "/dev/disk/by-id/ata-HITACHI_HUA723020ALA640_YGGD1LVA";
 in
 {
   disko.devices = {
@@ -38,6 +38,16 @@ in
         content = {
           type = "gpt";
           partitions = {
+            ESP = {
+              size = "1G";
+              type = "EF00";
+              content = {
+                type = "filesystem";
+                format = "vfat";
+                mountpoint = "/boot2";
+                mountOptions = [ "umask=0077" ];
+              };
+            };
             zfs = {
               size = "100%";
               content = {
