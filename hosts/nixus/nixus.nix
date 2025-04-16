@@ -14,6 +14,7 @@
     ./modules/webapps.nix
     ./modules/mail.nix
     ./modules/zfs.nix
+    ./modules/xwiki.nix
   ];
 
   # Bootloader
@@ -34,8 +35,12 @@
   networking.hostName = "nixus";
   networking.hostId = "2dc668d3";
   networking.usePredictableInterfaceNames = true;
+  networking.hosts = {
+    "136.167.255.19" = [ "nixus.bc.edu" ];
+  };
 
   users.groups.nginx = { };
+  users.groups.www = { };
   users.users.nginx = {
     group = "nginx";
     extraGroups = [ "www" ];

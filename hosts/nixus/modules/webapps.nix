@@ -17,52 +17,55 @@
   ];
 
   services.nginx = {
-    package = pkgs.nginx.override { openssl = pkgs.libressl; };
     enable = true;
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+    recommendedProxySettings = true;
     virtualHosts."nixus.bc.edu" = {
-      # jellyfin
+      root = "/var/www/nixus";
       locations =
         let proxy =
           port: extra: {
             proxyPass = "http://127.0.0.1:${toString port}";
             proxyWebsockets = true;
           } // extra;
-        in
-        {
-        # Jellyfin
-        "/" = proxy 8096 {
-          extraConfig =
-            ''proxy_pass_header Authorization;
+        in {
+          # Jellyfin
+          "/" = proxy 8096 {
+            extraConfig =
+              ''proxy_pass_header Authorization;
               proxy_buffering off;''
-            ;
-        };
-        "/socket" = proxy 8096 {};
+              ;
+          };
+          "/socket" = proxy 8096 {};
 
-        "/prowlarr" = proxy 9696 {}; 
-        "/lidarr" = proxy 8686 {};
-        "/sonarr" = proxy 8989 {};
-        "/radarr" = proxy 7878 {};
-        "/readarr" = proxy 8787 {};
-        "/transmission" = proxy 9091 {};
-        # "/paperless" = proxy 28981 {};
-      };
+          "/xwiki" = {
+            proxyPass = "http://127.0.0.1:8080/xwiki";
+            proxyWebsockets = true;
+          };
+
+          "/prowlarr" = proxy 9696 {}; 
+          "/lidarr" = proxy 8686 {};
+          "/sonarr" = proxy 8989 {};
+          "/radarr" = proxy 7878 {};
+          "/readarr" = proxy 8787 {};
+          "/transmission" = proxy 9091 {};
+
+          "/error" = {
+            priority = 10;
+            root = "/var/www/nixus";
+            extraConfig = "internal;";
+          };
+        };
+
+      extraConfig = ''
+        proxy_intercept_errors on;
+        error_page 403 /error/403.html;
+        error_page 404 /error/404.html;
+        error_page 500 501 502 503 504 /error/5xx.html;
+      '';
     };
   };
-
-  # services.paperless = {
-  #   enable = true;
-  #   port = 28981;
-  #   settings = {
-  #     DEBUG = true;
-  #     PAPERLESS_URL = "nixus.bc.edu";
-  #     PAPERLESS_FORCE_SCRIPT_NAME = "/paperless";
-  #     PAPERLESS_STATIC_URL = "/paperless/static/";
-  #     PAPERLESS_ADMIN_USER = "caden";
-  #     PAPERLESS_ADMIN_PASSWORD = "password";
-  #     USE_X_FORWARDED_PORT = true;
-  #     USE_X_FORWARDED_HOST = true;
-  #   };
-  # };
 
   services.jellyfin = {
     enable = true;
@@ -96,6 +99,9 @@
   services.transmission = {
     enable = true;
     group = "media";
+    settings.umask = "774";
+    settings.download-dir = "/media/downloads";
+    downloadDirPermissions = "774";
     webHome = pkgs.flood-for-transmission;
   };
 
