@@ -41,6 +41,11 @@ rec {
   programs = {
     home-manager.enable = true;
 
+    nix-index = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+
     nushell = {
       package = myNushell;
       enable = true;
@@ -281,9 +286,13 @@ rec {
         foot
         rofi-wayland
         tauon
-        inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
         xarchiver
         zathura
+        
+        # Browser
+        inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
+        floorp
+
 
         #
         # Gui app required tools
