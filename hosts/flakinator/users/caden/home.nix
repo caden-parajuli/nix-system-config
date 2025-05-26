@@ -95,10 +95,6 @@ rec {
           src = pkgs.fishPlugins.plugin-git.src;
         }
         {
-          name = "sponge";
-          src = pkgs.fishPlugins.sponge.src;
-        }
-        {
           name = "done";
           src = pkgs.fishPlugins.done.src;
         }
@@ -285,7 +281,9 @@ rec {
         alacritty
         foot
         rofi-wayland
+        rofi-calc
         tauon
+        jellyfin-tui
         xarchiver
         zathura
         
@@ -314,6 +312,7 @@ rec {
         bottles
         fuse-overlayfs
         bubblewrap
+        lutris
 
         #
         # Desktop tools
@@ -327,6 +326,7 @@ rec {
         # Screenshot
         grim
         slurp
+        imagemagick
         # Status
         avizo
         waybar
@@ -375,6 +375,7 @@ rec {
         git-open
         xxh
         sshs
+        feh
 
         # Nushell
 
@@ -384,6 +385,9 @@ rec {
         # Networking
         dig
         inetutils
+
+        # Deployment
+        flyctl
 
         # Fonts
         nerd-fonts.fira-code

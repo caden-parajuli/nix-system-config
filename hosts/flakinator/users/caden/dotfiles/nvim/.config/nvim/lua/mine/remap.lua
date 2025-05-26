@@ -30,7 +30,9 @@ vim.keymap.set("i", "<M-k>", "<Up>")
 vim.keymap.set("i", "<M-l>", "<Right>")
 
 vim.keymap.set("n", "<M-m>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
+vim.keymap.set("n", "<leader>ff", function()
+    require("conform").format({ async = true, lsp_fallback = true })
+end)
 
 -- rename word
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])

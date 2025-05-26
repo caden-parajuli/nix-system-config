@@ -132,6 +132,7 @@
     # Networking
     wireshark
     openconnect
+    networkmanager-openconnect
 
     # Disks
     gparted
@@ -258,6 +259,7 @@
     8080
     8000
     80
+    443
   ];
   networking.firewall.allowedUDPPorts = [
     57766

@@ -99,7 +99,7 @@
 
               home-manager.users.caden.imports = [
                 ./hosts/flakinator/users/caden/home.nix
-                catppuccin.homeManagerModules.catppuccin
+                catppuccin.homeModules.catppuccin
               ];
             }
           ];

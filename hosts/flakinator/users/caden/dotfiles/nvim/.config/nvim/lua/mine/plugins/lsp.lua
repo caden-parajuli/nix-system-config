@@ -203,8 +203,12 @@ return {
         lspconfig.texlab.setup({})
 
         -- Scala (metals)
-        lspconfig.metals.setup{}
-
+        lspconfig.metals.setup{
+            -- message_level = 2,
+            init_options = {
+                statusBarProvider = "",
+            },
+        }
 
         -- Completion
         local cmp_select = { behavior = cmp.SelectBehavior.Select }

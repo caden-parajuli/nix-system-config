@@ -10,6 +10,7 @@
   "cmp-octave": { "branch": "main", "commit": "f1f35ddb92bac6090f41c6b9bf6c45053c2eb5b4" },
   "cmp-path": { "branch": "main", "commit": "91ff86cd9c29299a64f968ebb45846c485725f23" },
   "cmp_luasnip": { "branch": "master", "commit": "98d9cb5c2c38532bd9bdb481067b20fea8f32e90" },
+  "conform.nvim": { "branch": "master", "commit": "374aaf384e2e841607b8e2fe63fa3ad01d111c91" },
   "coq-lsp.nvim": { "branch": "main", "commit": "6135ed25fc2a1b4b1b6451ed206dc38b493ff1a2" },
   "cutlass.nvim": { "branch": "main", "commit": "1ac7e4b53d79410be52a9e464d44c60556282b3e" },
   "dressing.nvim": { "branch": "master", "commit": "2d7c2db2507fa3c4956142ee607431ddb2828639" },
