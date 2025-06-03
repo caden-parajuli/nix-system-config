@@ -11,11 +11,23 @@
     ./age.nix
 
     ./modules/lang-servers.nix
+
+    ./modules/dns.nix
     ./modules/webapps.nix
     ./modules/mail.nix
     ./modules/zfs.nix
     ./modules/xwiki.nix
+
+    ./modules/gaming.nix
   ];
+
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (pkgs.lib.getName pkg) [
+      "nvidia-x11"
+      "nvidia-settings"
+      "nvidia-persistenced"
+    ];
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -36,7 +48,7 @@
   networking.hostId = "2dc668d3";
   networking.usePredictableInterfaceNames = true;
   networking.hosts = {
-    "136.167.255.19" = [ "nixus.bc.edu" ];
+    "192.168.7.179" = [ "nixus.bc.edu" ];
   };
 
   users.groups.nginx = { };
@@ -130,7 +142,8 @@
     tmux
 
     # Desktop streaming
-    wayland
+    # wayland
+    xorg.xinit
 
     # Age secrets
     inputs.agenix.packages."${system}".default
