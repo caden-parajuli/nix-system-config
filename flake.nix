@@ -36,11 +36,6 @@
     zig.url = "github:mitchellh/zig-overlay";
     ghostty.url = "github:ghostty-org/ghostty";
 
-    nushellWith = {
-      url = "github:YPares/nushellWith";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     yazi.url = "github:sxyazi/yazi";
     yazi-rs = {
       url = "github:yazi-rs/plugins";
@@ -66,7 +61,6 @@
       yazi,
       catppuccin,
       ghostty,
-      nushellWith,
       zig,
       ...
     }:
@@ -91,7 +85,7 @@
             home-manager.nixosModules.home-manager
             {
               home-manager.extraSpecialArgs = {
-                inherit inputs ghostty zig nushellWith yazi;
+                inherit inputs ghostty zig yazi;
               };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;

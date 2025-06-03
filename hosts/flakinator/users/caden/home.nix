@@ -2,22 +2,12 @@
   inputs,
   pkgs,
   ghostty,
-  nushellWith,
   zig,
   ...
 }:
 
 let
   system = "x86_64-linux";
-  nupkgs = nushellWith.packages.${system};
-  myNushell = nushellWith {
-    inherit pkgs;
-    plugins.nix = [
-      # nupkgs.nu_plugin_net 
-      nupkgs.nu_plugin_gstat
-    ];
-    # libraries.source = [ nupkgs.nu-batteries ];
-  };
 in
 rec {
   imports = [
@@ -47,7 +37,6 @@ rec {
     };
 
     nushell = {
-      package = myNushell;
       enable = true;
       extraConfig = "source /home/caden/.config/nushell/my_init.nu";
       extraEnv = "$env.CARAPACE_BRIDGES = 'fish,bash,inshellisense'";
@@ -331,6 +320,8 @@ rec {
         avizo
         waybar
         swaynotificationcenter
+        # Email
+        thunderbird
 
         # Control
         playerctl
@@ -376,6 +367,7 @@ rec {
         xxh
         sshs
         feh
+        ffmpeg-full
 
         # Nushell
 
@@ -394,7 +386,6 @@ rec {
 
         # Misc
         xdg-utils
-        ventoy
       ];
   };
   systemd.user.sessionVariables = home.sessionVariables;

@@ -35,7 +35,7 @@
   networking.networkmanager.enable = true;
   networking.hostName = "flakinator";
   networking.hosts = {
-    "136.167.255.213" = [ "nixus.bc.edu" ];
+    "192.168.7.179" = [ "nixus.local" ];
   };
 
   users.groups.nginx = { };
