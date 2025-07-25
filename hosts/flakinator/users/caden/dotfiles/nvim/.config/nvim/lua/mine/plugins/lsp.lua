@@ -210,6 +210,13 @@ return {
             },
         }
 
+        -- QML
+        lspconfig.qmlls.setup{
+            cmd = {"qmlls", "-E"}
+        }
+
+        lspconfig.astro.setup{}
+
         -- Completion
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
         cmp.setup({

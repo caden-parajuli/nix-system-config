@@ -31,7 +31,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    firefox.url = "github:nix-community/flake-firefox-nightly/master";
     catppuccin.url = "github:catppuccin/nix";
     zig.url = "github:mitchellh/zig-overlay";
     ghostty.url = "github:ghostty-org/ghostty";
@@ -50,6 +49,11 @@
       flake = false;
     };
 
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
@@ -62,6 +66,7 @@
       catppuccin,
       ghostty,
       zig,
+      quickshell,
       ...
     }:
     {

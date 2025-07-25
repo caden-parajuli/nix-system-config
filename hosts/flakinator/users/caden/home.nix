@@ -3,6 +3,7 @@
   pkgs,
   ghostty,
   zig,
+  quickshell,
   ...
 }:
 
@@ -23,6 +24,7 @@ rec {
     enable = true;
 
     gtk.enable = false;
+    kvantum.enable = false;
     hyprland.enable = false;
     hyprlock.enable = false;
     waybar.enable = false;
@@ -44,7 +46,6 @@ rec {
         vim = "nvim";
         nv = "nvim";
         n = "nvim";
-        firefox = "firefox-nightly";
       };
     };
 
@@ -67,7 +68,6 @@ rec {
         vim = "nvim";
         nv = "nvim";
         n = "nvim";
-        firefox = "firefox-nightly";
       };
 
       plugins = [
@@ -114,11 +114,11 @@ rec {
 
   qt = {
     enable = true;
-    platformTheme.name = "kvantum";
-    style = {
-      package = pkgs.catppuccin-kvantum;
-      name = "kvantum";
-    };
+    platformTheme.name = "qtct";
+    # style = {
+    #   package = pkgs.catppuccin-kvantum;
+    #   name = "kvantum";
+    # };
   };
 
   gtk = {
@@ -188,6 +188,11 @@ rec {
             })
           ];
         });
+        quickshellPackage = inputs.quickshell.packages.${pkgs.system}.default;
+        qtEnv = with pkgs.qt6; env "qt-custom-${qtbase.version}" [
+          qtdeclarative
+        ];
+
       in
       with pkgs;
       [
@@ -259,9 +264,7 @@ rec {
         neovim
         stow
 
-        my-appflowy
-        # logseq has been removed. See here:
-        # logseq # https://github.com/NixOS/nixpkgs/blob/cdd2ef009676ac92b715ff26630164bb88fec4e0/pkgs/by-name/lo/logseq/package.nix#L93
+        # my-appflowy
 
         #
         # GUI Apps
@@ -271,13 +274,14 @@ rec {
         foot
         rofi-wayland
         rofi-calc
-        tauon
+        # tauon
         jellyfin-tui
         xarchiver
         zathura
+        signal-desktop
+        blender
         
         # Browser
-        inputs.firefox.packages.${pkgs.system}.firefox-nightly-bin
         floorp
 
 
@@ -302,6 +306,14 @@ rec {
         fuse-overlayfs
         bubblewrap
         lutris
+        (retroarch.withCores (cores: with cores; [
+          snes9x
+          citra
+          dolphin
+
+          desmume # TODO: Get dumps for melonds
+        ]))
+        moonlight-qt
 
         #
         # Desktop tools
@@ -323,18 +335,26 @@ rec {
         # Email
         thunderbird
 
+        # Quickshell
+        qtEnv
+        quickshellPackage
+        qt6Packages.qtstyleplugin-kvantum
+        kdePackages.networkmanager-qt
+        kdePackages.qt6ct
+
         # Control
         playerctl
         nwg-displays
         networkmanagerapplet
         pavucontrol
         easyeffects
+        wireguard-ui
 
         # Theming
         libsForQt5.qt5ct
         catppuccin-qt5ct
-        libsForQt5.qtstyleplugin-kvantum
-        kdePackages.qtstyleplugin-kvantum
+        # libsForQt5.qtstyleplugin-kvantum
+        # kdePackages.qtstyleplugin-kvantum
 
         # Daemons
         nginx

@@ -35,7 +35,7 @@
   networking.networkmanager.enable = true;
   networking.hostName = "flakinator";
   networking.hosts = {
-    "192.168.7.179" = [ "nixus.local" ];
+    "192.168.16.128" = [ "nixus.local" ];
   };
 
   users.groups.nginx = { };
@@ -103,56 +103,68 @@
   };
 
   # Packages installed in system profile.
-  nixpkgs.config.allowUnfree = true;
+  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (pkgs.lib.getName pkg) [
+    "android-sdk-cmdline-tools"
+    "steam"
+    "steam-unwrapped"
+    "libretro-snes9x"
+  ];
   nixpkgs.config.permittedInsecurePackages = [
     "electron-27.3.11"
   ];
 
-  environment.systemPackages = with pkgs; [
-    lshw
-    fish
-    nix-your-shell
-    devenv
-    nix-prefetch
+  environment.systemPackages = 
+    with pkgs; [
+      lshw
+      fish
+      nix-your-shell
+      devenv
+      nix-prefetch
 
-    config.boot.kernelPackages.perf
+      config.boot.kernelPackages.perf
 
-    pkg-config
+      pkg-config
 
-    # Desktop
-    wayland
-    hyprpaper
-    hypridle
-    hyprpolkitagent
-    hyprland-qtutils
-    xdg-desktop-portal
+      # Desktop
+      wayland
+      hyprpaper
+      hypridle
+      hyprpolkitagent
+      hyprland-qtutils
+      xdg-desktop-portal
 
-    pulseaudio
+      # quickshellPackage
+      # qtEnv
 
-    # Networking
-    wireshark
-    openconnect
-    networkmanager-openconnect
+      # Networking
+      wireshark
+      openconnect_openssl
+      networkmanager-openconnect
+      wireguard-tools
+      lokinet
+      socat
 
-    # Disks
-    gparted
+      # Disks
+      gparted
 
-    # Age secrets
-    inputs.agenix.packages."${system}".default
+      # Age secrets
+      inputs.agenix.packages."${system}".default
 
-    # Docker
-    devcontainer
+      # Docker
+      devcontainer
 
-    # Manpages
-    man-pages
-    man-pages-posix
+      # Manpages
+      man-pages
+      man-pages-posix
 
-    # Games
-    # protonup
-    # lutris
+      openssl
 
-    transmission_4-qt6
-  ];
+      # Games
+      # protonup
+      # lutris
+
+      transmission_4-qt6
+    ];
 
   # udev rules
   services.udev = {
@@ -229,17 +241,42 @@
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
+    audio.enable = true;
+    socketActivation = true;
+
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+  systemd.user.services.pipewire.wantedBy = [ "default.target" ];
 
   services.logind = {
     lidSwitch = "suspend";
     lidSwitchExternalPower = "suspend";
   };
 
+  # services.lokinet = {
+  #   enable = true;
+  #   useLocally = true;
+  #   settings = {
+  #     network.exit-node = [ "euroexit.loki" ];
+  #     dns.upstream = [
+  #       "192.168.7.179"
+  #       "1.1.1.1"
+  #     ];
+  #   };
+  # };
+
   services.printing.enable = true;
+  services.blueman.enable = true;
+
+  services.upower = {
+    enable = true;
+    criticalPowerAction = "PowerOff";
+    percentageLow = 20;
+    percentageCritical = 5;
+    percentageAction = 1;
+  };
 
   systemd = {
     targets = {
@@ -254,17 +291,30 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [
-    57766
-    8080
-    8000
-    80
-    443
-  ];
-  networking.firewall.allowedUDPPorts = [
-    57766
-    53
-  ];
+  networking.firewall = {
+    allowedTCPPorts = [
+      57766
+      8080
+      8000
+      80
+      443
+    ];
+    allowedUDPPorts = [
+      57766
+      53
+    ];
+
+    logReversePathDrops = true;
+    # tell rpfilter to ignore wireguard traffic
+    extraCommands = ''
+     iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN
+     iptables -t mangle -I nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN
+    '';
+    extraStopCommands = ''
+     iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --sport 51820 -j RETURN || true
+     iptables -t mangle -D nixos-fw-rpfilter -p udp -m udp --dport 51820 -j RETURN || true
+    '';
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
