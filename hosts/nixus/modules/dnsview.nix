@@ -5,7 +5,8 @@
   ];
   services.bind = let
     hostip = "192.168.16.128";
-    wireguardip = "10.0.0.2";
+    wireguardip = "172.30.202.2";
+    wireguardSubnet = "172.30.202.0/24";
     zone-nixus = pkgs.writeText "zone-nixus.local" ''
       $TTL    1d
       $ORIGIN nixus.local.
@@ -49,11 +50,11 @@
   in
     {
     enable = true;
-    cacheNetworks = [ "127.0.0.0/24" "::1/128" "192.168.16.0/24" "10.0.0.0/24" ];
+    cacheNetworks = [ "127.0.0.0/24" "::1/128" "192.168.16.0/24" "${wireguardSubnet}" ];
     forward = "first";
     forwarders = [ "1.1.1.1" "2606:4700:4700::1111" ];
     extraConfig = ''
-      acl "wireguard" { 10.0.0.0/24; };
+      acl "wireguard" { ${wireguardSubnet}; };
       acl "local" { 127.0.0.0/24; ::1/128; 192.168.16.0/24; };
 
       view "wireguard" {
