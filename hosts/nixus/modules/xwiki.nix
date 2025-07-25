@@ -9,8 +9,12 @@ in
   # Runtime
   virtualisation.docker = {
     enable = true;
+    enableOnBoot = true;
+    storageDriver = "overlay2";
+    # liveRestore = false;
     autoPrune.enable = true;
   };
+  users.extraGroups.docker.members = [ "caden" ];
 
   virtualisation.oci-containers = {
     backend = "docker";

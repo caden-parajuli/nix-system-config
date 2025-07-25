@@ -16,6 +16,7 @@ let
 in
 {
   "cadenPasswordHash.age".publicKeys = keys;
+  "wireguardPrivate.age".publicKeys = keys;
   "cadenGmailPassword.age".publicKeys = keys;
 }
 

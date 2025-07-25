@@ -7,23 +7,29 @@
 
 {
   imports = [
-    ./hardware-configuration.nix
+    ./hardware/hardware.nix
     ./age.nix
 
     ./modules/lang-servers.nix
 
-    ./modules/dns.nix
+    # ./modules/dns.nix
+    ./modules/dnsview.nix
     ./modules/webapps.nix
+    ./modules/arr.nix
     ./modules/mail.nix
     ./modules/zfs.nix
     ./modules/xwiki.nix
 
     ./modules/gaming.nix
+
+    ./modules/wireguard.nix
   ];
 
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (pkgs.lib.getName pkg) [
+      "steam"
+      "steam-unwrapped"
       "nvidia-x11"
       "nvidia-settings"
       "nvidia-persistenced"
@@ -33,22 +39,13 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Docker
-  virtualisation.docker = {
-    enable = true;
-    # rootless.enable = true;
-    # rootless.setSocketVariable = true;
-    storageDriver = "overlay2";
-  };
-  users.extraGroups.docker.members = [ "caden" ];
-
   # Networking
   networking.networkmanager.enable = true;
   networking.hostName = "nixus";
   networking.hostId = "2dc668d3";
   networking.usePredictableInterfaceNames = true;
   networking.hosts = {
-    "192.168.7.179" = [ "nixus.bc.edu" ];
+    "192.168.7.179" = [ "nixus.local" ];
   };
 
   users.groups.nginx = { };
@@ -126,6 +123,9 @@
     coreutils
     curl
     stow
+    ripgrep
+    usbutils
+    pciutils
 
     # Editing
     vim
@@ -141,10 +141,6 @@
     # Administration
     tmux
 
-    # Desktop streaming
-    # wayland
-    xorg.xinit
-
     # Age secrets
     inputs.agenix.packages."${system}".default
 
@@ -156,6 +152,7 @@
     man-pages-posix
 
     transmission_4
+
   ];
 
   # udev rules
@@ -224,6 +221,7 @@
 
   networking.firewall.allowedTCPPorts = [
     57766
+    5201
     8080
     8000
     80

@@ -7,6 +7,8 @@
 {
   imports = [
       (modulesPath + "/installer/scan/not-detected.nix")
+      # ./nvidia.nix
+      ./amdgpu.nix
     ];
 
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "ehci_pci" "usb_storage" "sd_mod" "sr_mod" ];
@@ -34,15 +36,7 @@
 
    hardware.graphics = {
     enable = true;
-  };
-
-  services.xserver.videoDrivers = ["nvidia"];
-
-  hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
-    modesetting.enable = true;
-    open = false;
-    nvidiaSettings = true;
+    enable32Bit = true;
   };
 
 }

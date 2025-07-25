@@ -1,53 +1,67 @@
 {pkgs, ...}:
 {
-  services.xserver = {
+  # services.xserver = {
+  #   enable = true;
+  #   displayManager.startx.enable = true;
+  # };
+
+  # programs.uwsm = {
+  #   enable = true;
+  #   waylandCompositors = {
+  #     hyprland = {
+  #       prettyName = "Hyprland";
+  #       binPath = "/run/current-system/sw/bin/Hyprland";
+  #     };
+  #   };
+  # };
+   
+  environment.systemPackages = with pkgs; [
+    vulkan-tools
+    vulkan-loader
+
+    wine
+    wayland
+    rofi-wayland
+    ghostty
+    lutris
+    protonup-qt
+    protonup-rs
+    (bottles.override {
+      removeWarningPopup = true;
+    })
+    # steam-run
+  ];
+
+  programs.hyprland = {
     enable = true;
-    displayManager.startx.enable = true;
-    config = pkgs.lib.mkAfter ''
-      Section "Device"
-          Identifier  "nvidiagpu"
-          Driver      "nvidia"
-      EndSection
-      
-      Section "Screen"
-          Identifier  "nvidiascreen"
-          Device      "nvidiagpu"
-          Option      "ConnectedMonitor" "DFP-1"
-      EndSection
-    '';
-    # config = pkgs.lib.mkAfter ''
-    #   Section "ServerLayout"
-    #   Identifier "TwinLayout"
-    #   Screen 0 "metaScreen" 0 0
-    #   EndSection
-    #   
-    #   Section "Monitor"
-    #   Identifier "Monitor0"
-    #   Option "Enable" "true"
-    #   EndSection
-    #   
-    #   Section "Device"
-    #   Identifier "Card0"
-    #   Driver "nvidia"
-    #   VendorName "NVIDIA Corporation"
-    #   Option "TwinView"
-    #   Option "MetaModes" "1920x1080"
-    #   Option "ConnectedMonitor" "DP-0"
-    #   Option "ModeValidation" "NoDFPNativeResolutionCheck,NoVirtualSizeCheck,NoMaxPClkCheck,NoHorizSyncCheck,NoVertRefreshCheck,NoWidthAlignmentCheck"
-    #   EndSection
-    #   
-    #   Section "Screen"
-    #   Identifier "metaScreen"
-    #   Device "Card0"
-    #   Monitor "Monitor0"
-    #   DefaultDepth 24
-    #   Option "TwinView" "True"
-    #   SubSection "Display"
-    #   Modes "1920x1080"
-    #   EndSubSection
-    #   EndSection
-    # '';
+    # withUWSM = true;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
   };
+
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        # command = "uwsm start hyprland.desktop";
+        command = "Hyprland";
+        user = "caden";
+      };
+      default_session = initial_session;
+    };
+  };
+
+  # programs.steam = {
+  #   enable = true;
+  #   gamescopeSession.enable = true;
+  #   localNetworkGameTransfers.openFirewall = true;
+  #   package = pkgs.steam.override {
+  #     extraPkgs = pkgs: [ pkgs.attr.dev ];
+  #   };
+  # };
+  # programs.appimage = {
+  #   enable = true;
+  #   binfmt = true;
+  # };
 
   services.sunshine = {
     enable = true;
@@ -56,9 +70,25 @@
     openFirewall = true;
     settings = {
       sunshine_name = "nixus";
-      port = 47989;
-      capture = "kms";
+      # capture = "kms";
       adapter_name = "/dev/dri/renderD128";
+    };
+    applications = {
+      apps = [
+        {
+          name = "Desktop";
+          auto-detach = "true";
+        }
+        {
+          name = "Bottles";
+          auto-detach = "true";
+          cmd = ''bottles'';
+        }
+        {
+          name = "Blue Prince";
+          cmd = ''bottles-cli -b "Blue" -p "BLUE PRINCE"'';
+        }
+      ];
     };
   };
 }
