@@ -1,6 +1,5 @@
 font-family = "FiraCode Nerd Font"
 
-# theme = catppuccin-mocha
 theme = Dracula
 resize-overlay = never
 
@@ -12,6 +11,9 @@ cursor-style-blink = false
 
 # Hide mouse
 mouse-hide-while-typing = true
+
+# Hide titlebar
+gtk-titlebar=false
 
 # Keybindings
 keybind = alt+t=new_window
