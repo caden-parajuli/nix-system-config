@@ -23,7 +23,6 @@ rec {
   catppuccin = {
     enable = true;
 
-    gtk.enable = false;
     kvantum.enable = false;
     hyprland.enable = false;
     hyprlock.enable = false;
@@ -100,6 +99,29 @@ rec {
       enable = true;
       nix-direnv.enable = true;
     };
+
+    zen-browser = {
+      enable = true;
+      nativeMessagingHosts = [pkgs.firefoxpwa];
+      policies = {
+        AutofillAddressEnabled = true;
+        AutofillCreditCardEnabled = false;
+        # DisableAppUpdate = true;
+        DisableFeedbackCommands = true;
+        DisableFirefoxStudies = true;
+        DisablePocket = true;
+        DisableTelemetry = true;
+        DontCheckDefaultBrowser = true;
+        NoDefaultBookmarks = true;
+        OfferToSaveLogins = false;
+        EnableTrackingProtection = {
+          Value = true;
+          Locked = false;
+          Cryptomining = true;
+          Fingerprinting = true;
+        };
+      };
+    };
   };
 
   dconf.settings = {
@@ -165,29 +187,6 @@ rec {
 
     packages =
       let
-        # nixpkgs appflowy is out of date
-        my-appflowy = pkgs.appflowy.overrideAttrs (oldAttrs: rec {
-          inherit (oldAttrs) pname;
-          version = "0.8.3";
-          mimeTypes = [ "x-scheme-handler/appflowy-flutter" ];
-          src = pkgs.fetchzip {
-            url = "https://github.com/AppFlowy-IO/appflowy/releases/download/${version}/AppFlowy-${version}-linux-x86_64.tar.gz";
-            hash = "sha256-zIxNk7uwVeJlMzxi7Gxbp1TkHt5PBKnDOw7Qq5ReyFI=";
-            stripRoot = false;
-          };
-          # Fix browser redirect. This fix has landed in nixpkgs:master
-          desktopItems = [
-            (pkgs.makeDesktopItem {
-              name = "appflowy";
-              desktopName = "AppFlowy";
-              comment = "An open-source alternative to Notion";
-              exec = "appflowy %U";
-              icon = "appflowy";
-              categories = [ "Office" ];
-              mimeTypes = [ "x-scheme-handler/appflowy-flutter" ];
-            })
-          ];
-        });
         quickshellPackage = inputs.quickshell.packages.${pkgs.system}.default;
         qtEnv = with pkgs.qt6; env "qt-custom-${qtbase.version}" [
           qtdeclarative
@@ -252,6 +251,11 @@ rec {
         # LaTeX
         texlab
 
+        # Typst
+        typst
+        tinymist
+        websocat
+
         # JS
         nodejs-slim # I really only need this for tree-sitter
 
@@ -262,9 +266,9 @@ rec {
 
         # Text editing
         neovim
-        stow
+        libreoffice-qt6-still
 
-        # my-appflowy
+        stow
 
         #
         # GUI Apps
@@ -275,14 +279,16 @@ rec {
         rofi-wayland
         rofi-calc
         # tauon
+        vlc
         jellyfin-tui
         xarchiver
         zathura
         signal-desktop
         blender
+        obs-studio
         
-        # Browser
-        floorp
+        # Alternative Browser
+        ungoogled-chromium
 
 
         #
@@ -323,6 +329,7 @@ rec {
         hyprpicker
         hyprsunset
         wl-clipboard-rs
+        wl-clip-persist
         hyprls
         # Screenshot
         grim
@@ -332,8 +339,12 @@ rec {
         avizo
         waybar
         swaynotificationcenter
+
         # Email
         thunderbird
+
+        # 3D Printing
+        orca-slicer
 
         # Quickshell
         qtEnv
@@ -344,7 +355,7 @@ rec {
 
         # Control
         playerctl
-        nwg-displays
+        # nwg-displays
         networkmanagerapplet
         pavucontrol
         easyeffects
@@ -353,6 +364,7 @@ rec {
         # Theming
         libsForQt5.qt5ct
         catppuccin-qt5ct
+        dracula-theme
         # libsForQt5.qtstyleplugin-kvantum
         # kdePackages.qtstyleplugin-kvantum
 

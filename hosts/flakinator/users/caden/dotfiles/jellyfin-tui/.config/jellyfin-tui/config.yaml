@@ -1,3 +1,5 @@
-password: Th0rn@x1
-server: http://jellyfin.nixus.local
-username: caden
+servers:
+- name: Nixus
+  password: Th0rn@x1
+  url: http://jellyfin.nixus.local
+  username: caden

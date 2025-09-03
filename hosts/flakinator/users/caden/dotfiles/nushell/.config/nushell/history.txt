@@ -1,9 +1,0 @@
-for file in (ls out)
-ls out | fore
-ls out | each
-ls out
-ls out | each {|x| mv x.name (x.name | split row '.').0}
-ls out | each {|x| mv x.name ($x.name | split row '.').0}
-ls out | each {|x| mv $x.name ($x.name | split row '.').0}
-ls out
-time

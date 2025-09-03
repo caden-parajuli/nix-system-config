@@ -202,6 +202,15 @@ return {
         -- LaTeX
         lspconfig.texlab.setup({})
 
+        -- Typst
+        lspconfig.tinymist.setup({
+            settings = {
+                formatterMode = "typstyle",
+                exportPdf = "onType",
+                semanticTokens = "disable"
+            }
+        })
+
         -- Scala (metals)
         lspconfig.metals.setup{
             -- message_level = 2,

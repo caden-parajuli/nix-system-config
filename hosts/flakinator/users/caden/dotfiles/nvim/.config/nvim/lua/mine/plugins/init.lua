@@ -323,11 +323,25 @@ return {
 
     -- Coq
     { "whonore/Coqtail", },
-    { "tomtomjhj/coq-lsp.nvim",
+    {
+        "tomtomjhj/coq-lsp.nvim",
         config = function()
             vim.g.loaded_coqtail = 1
             vim.g["coqtail#supported"] = 0
             require("coq-lsp").setup{}
         end
     },
+
+    -- Typst
+    {
+        "chomosuke/typst-preview.nvim",
+        lazy = false, -- or ft = 'typst'
+        version = '1.*',
+        opts = {
+            dependencies_bin = {
+                ['tinymist'] = "/etc/profiles/per-user/caden/bin/tinymist",
+                ['websocat'] = "/etc/profiles/per-user/caden/bin/websocat"
+            }
+        },
+    }
 }

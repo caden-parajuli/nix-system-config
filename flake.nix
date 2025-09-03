@@ -54,6 +54,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    zen-browser = {
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -99,6 +103,7 @@
               home-manager.users.caden.imports = [
                 ./hosts/flakinator/users/caden/home.nix
                 catppuccin.homeModules.catppuccin
+                inputs.zen-browser.homeModules.twilight-official
               ];
             }
           ];

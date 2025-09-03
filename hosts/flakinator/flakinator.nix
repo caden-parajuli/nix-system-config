@@ -9,6 +9,7 @@
   imports = [
     ./hardware-configuration.nix
     ./greetd.nix
+    ./virtualization.nix
     ./age.nix
   ];
 
@@ -18,24 +19,11 @@
   boot.supportedFilesystems = [ "ntfs" ];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  # Virtualisation
-  programs.virt-manager.enable = true;
-  virtualisation.libvirtd.enable = true;
-  users.groups.libvirtd.members = [ "caden" ];
-  # Docker
-  virtualisation.docker = {
-    enable = true;
-    # rootless.enable = true;
-    # rootless.setSocketVariable = true;
-    storageDriver = "overlay2";
-  };
-  users.extraGroups.docker.members = [ "caden" ];
-
   # Networking
   networking.networkmanager.enable = true;
   networking.hostName = "flakinator";
   networking.hosts = {
-    "192.168.16.128" = [ "nixus.local" ];
+    "192.168.16.2" = [ "nixus.local" ];
   };
 
   users.groups.nginx = { };
@@ -86,7 +74,7 @@
     extraGroups = [
       "adbusers"
       "dialout"
-      "docker"
+      # "docker"
       "kvm"
       "libvirtd"
       "vboxusers"
@@ -108,63 +96,68 @@
     "steam"
     "steam-unwrapped"
     "libretro-snes9x"
+
+    "unityhub"
+    "corefonts"
+    "rider"
   ];
-  nixpkgs.config.permittedInsecurePackages = [
-    "electron-27.3.11"
+
+  environment.systemPackages = with pkgs; [
+    lshw
+    fish
+    nix-your-shell
+    devenv
+    nix-prefetch
+
+    config.boot.kernelPackages.perf
+
+    pkg-config
+
+    # Desktop
+    wayland
+    hyprpaper
+    hypridle
+    hyprpolkitagent
+    hyprland-qtutils
+    xdg-desktop-portal
+
+    # quickshellPackage
+    # qtEnv
+
+    # Networking
+    wireshark
+    openconnect_openssl
+    networkmanager-openconnect
+    wireguard-tools
+    lokinet
+    socat
+
+    # Disks
+    gparted
+
+    # Age secrets
+    inputs.agenix.packages."${system}".default
+
+    # # Docker
+    # devcontainer
+
+    # Manpages
+    man-pages
+    man-pages-posix
+
+    openssl
+
+    # Games
+    # protonup
+    # lutris
+
+    transmission_4-qt6
+
+    # Teaching
+    unityhub
+    jetbrains.rider
+    mono
   ];
-
-  environment.systemPackages = 
-    with pkgs; [
-      lshw
-      fish
-      nix-your-shell
-      devenv
-      nix-prefetch
-
-      config.boot.kernelPackages.perf
-
-      pkg-config
-
-      # Desktop
-      wayland
-      hyprpaper
-      hypridle
-      hyprpolkitagent
-      hyprland-qtutils
-      xdg-desktop-portal
-
-      # quickshellPackage
-      # qtEnv
-
-      # Networking
-      wireshark
-      openconnect_openssl
-      networkmanager-openconnect
-      wireguard-tools
-      lokinet
-      socat
-
-      # Disks
-      gparted
-
-      # Age secrets
-      inputs.agenix.packages."${system}".default
-
-      # Docker
-      devcontainer
-
-      # Manpages
-      man-pages
-      man-pages-posix
-
-      openssl
-
-      # Games
-      # protonup
-      # lutris
-
-      transmission_4-qt6
-    ];
 
   # udev rules
   services.udev = {
@@ -255,18 +248,6 @@
     lidSwitchExternalPower = "suspend";
   };
 
-  # services.lokinet = {
-  #   enable = true;
-  #   useLocally = true;
-  #   settings = {
-  #     network.exit-node = [ "euroexit.loki" ];
-  #     dns.upstream = [
-  #       "192.168.7.179"
-  #       "1.1.1.1"
-  #     ];
-  #   };
-  # };
-
   services.printing.enable = true;
   services.blueman.enable = true;
 
@@ -303,6 +284,8 @@
       57766
       53
     ];
+
+    trustedInterfaces = [ "virbr0" ];
 
     logReversePathDrops = true;
     # tell rpfilter to ignore wireguard traffic
