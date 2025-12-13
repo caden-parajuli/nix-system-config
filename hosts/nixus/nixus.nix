@@ -9,31 +9,48 @@
   imports = [
     ./hardware/hardware.nix
     ./age.nix
+    ./modules/zfs.nix
 
     ./modules/lang-servers.nix
 
-    # ./modules/dns.nix
-    ./modules/dnsview.nix
-    ./modules/webapps.nix
-    ./modules/arr.nix
+    ./modules/dns/bind.nix
+    ./modules/dns/blocky.nix
+    ./modules/dns/porkbun.nix
+
     ./modules/mail.nix
-    ./modules/zfs.nix
-    ./modules/xwiki.nix
+
+    ./modules/webapps/webapps.nix
 
     ./modules/gaming.nix
+    ./modules/vnc.nix
+
+    ./modules/kodi.nix
+    ./modules/youtube.nix
 
     ./modules/wireguard.nix
+
+    ./modules/klipper/klipper.nix
+    ./modules/blender.nix
   ];
 
   nixpkgs.config.allowUnfreePredicate =
     pkg:
-    builtins.elem (pkgs.lib.getName pkg) [
+    let pkgname = pkgs.lib.getName pkg; in
+    (builtins.elem pkgname [
       "steam"
       "steam-unwrapped"
-      "nvidia-x11"
-      "nvidia-settings"
-      "nvidia-persistenced"
-    ];
+      "libnvjitlink"
+      "cudnn"
+      "libcublas"
+      "libcufft"
+      "libcurand"
+      "libcusolver"
+      "libcusparse"
+      "libnpp"
+      "libsciter"
+    ])
+    || (pkgs.lib.strings.hasPrefix "nvidia-" pkgname)
+    || (pkgs.lib.strings.hasPrefix "cuda" pkgname);
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -44,9 +61,9 @@
   networking.hostName = "nixus";
   networking.hostId = "2dc668d3";
   networking.usePredictableInterfaceNames = true;
-  networking.hosts = {
-    "192.168.7.179" = [ "nixus.local" ];
-  };
+
+  networking.modemmanager.enable = pkgs.lib.mkForce false;
+  systemd.services.ModemManager = { enable = pkgs.lib.mkForce false; };
 
   users.groups.nginx = { };
   users.groups.www = { };
@@ -70,13 +87,20 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Enable flakes
-  nix.settings.experimental-features = "nix-command flakes";
-  # Trust sudoers
-  nix.settings.trusted-users = [
-    "root"
-    "@wheel"
-  ];
+  nix.settings = {
+    experimental-features = "nix-command flakes";
+    trusted-users = [
+      "root"
+      "@wheel"
+    ];
+    substituters = [
+      "https://nix-community.cachix.org"
+    ];
+    trusted-public-keys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+    ];
+
+  };
 
   # Weekly store garbage collection
   nix.gc = {
@@ -140,6 +164,8 @@
 
     # Administration
     tmux
+    iperf
+    dig
 
     # Age secrets
     inputs.agenix.packages."${system}".default
@@ -153,6 +179,9 @@
 
     transmission_4
 
+    # Desktop
+    pavucontrol
+    firefox
   ];
 
   # udev rules
@@ -198,7 +227,7 @@
   # Services
   #
 
-  # Pipewire (for wayland streaming)
+  # Pipewire
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -222,13 +251,21 @@
   networking.firewall.allowedTCPPorts = [
     57766
     5201
+    8085 # Kodi
+    9090 # Kodi
+    9777 # Kodi EventServer
+    8384 # Syncthing
+    22000 # Syncthing
     8080
     8000
-    80
-    22
+    7125 # Moonraker
+    443 # NGINX
+    80 # NGINX
+    22 # SSH
   ];
   networking.firewall.allowedUDPPorts = [
     57766
+    22000 21027 # Syncthing
     53
   ];
 

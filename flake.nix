@@ -16,6 +16,8 @@
     # Unstable
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    flake-utils.url = "github:numtide/flake-utils";
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -29,8 +31,10 @@
     agenix = {
       url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
 
+<<<<<<< Updated upstream
     catppuccin.url = "github:catppuccin/nix";
 
     zig = {
@@ -42,9 +46,36 @@
       url = "github:ghostty-org/ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.zig.follows = "zig";
+||||||| Stash base
+    catppuccin.url = "github:catppuccin/nix";
+    zig.url = "github:mitchellh/zig-overlay";
+    ghostty.url = "github:ghostty-org/ghostty";
+=======
+    catppuccin = {
+      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:catppuccin/nix";
+>>>>>>> Stashed changes
     };
 
-    yazi.url = "github:sxyazi/yazi";
+    zig = {
+      url = "github:mitchellh/zig-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.zon2nix.inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+      inputs.zig.follows = "zig";
+    };
+
+    yazi = {
+      url = "github:sxyazi/yazi";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
     yazi-rs = {
       url = "github:yazi-rs/plugins";
       flake = false;
@@ -63,6 +94,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+<<<<<<< Updated upstream
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -71,6 +103,13 @@
     webremote = {
       url = "github:caden-parajuli/webremote";
       inputs.nixpkgs.follows = "nixpkgs";
+||||||| Stash base
+=======
+    webremote = {
+      url = "github:caden-parajuli/webremote";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+>>>>>>> Stashed changes
     };
 
   };
@@ -86,6 +125,7 @@
       ghostty,
       zig,
       quickshell,
+      webremote,
       ...
     }:
     {
@@ -128,7 +168,7 @@
           system = "x86_64-linux";
 
           specialArgs = {
-            inherit inputs;
+            inherit inputs ghostty;
           };
 
           modules = [
@@ -138,6 +178,8 @@
             ./hosts/nixus/disko-config.nix
 
             agenix.nixosModules.default
+
+            webremote.nixosModule
           ];
         };
       };

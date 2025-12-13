@@ -18,5 +18,7 @@ in
   "cadenPasswordHash.age".publicKeys = keys;
   "wireguardPrivate.age".publicKeys = keys;
   "cadenGmailPassword.age".publicKeys = keys;
+  "paperlessPassword.age".publicKeys = keys;
+  "porkbunKey.age".publicKeys = keys;
 }
 

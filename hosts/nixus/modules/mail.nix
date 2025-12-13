@@ -1,10 +1,10 @@
 { config, pkgs, ... }:
 {
-  age.secrets.cadenGmail = {
-    file = ./../secrets/cadenGmailPassword.age;
-    owner = "caden";
-    group = "users";
-  };
+  # age.secrets.cadenGmail = {
+  #   file = ./../secrets/cadenGmailPassword.age;
+  #   owner = "caden";
+  #   group = "users";
+  # };
   programs.msmtp = {
     enable = true;
     setSendmail = true;

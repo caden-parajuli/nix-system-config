@@ -1,4 +1,5 @@
 {
+  pkgs,
   config,
   lib,
   modulesPath,
@@ -7,12 +8,13 @@
 {
   imports = [
       (modulesPath + "/installer/scan/not-detected.nix")
-      # ./nvidia.nix
-      ./amdgpu.nix
+      ./nvidia.nix
+      # ./amdgpu.nix
     ];
 
+  boot.kernelPackages = pkgs.linuxPackages;
   boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "ehci_pci" "usb_storage" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "usb_storage" "sd_mod" ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 
