@@ -1,0 +1,1 @@
+pkill rofi || rofi -show drun -theme "$HOME/.config/rofi/style-2.rasi"

@@ -34,34 +34,15 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-<<<<<<< Updated upstream
-    catppuccin.url = "github:catppuccin/nix";
-
-    zig = {
-      url = "github:mitchellh/zig-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    ghostty = {
-      url = "github:ghostty-org/ghostty";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.zig.follows = "zig";
-||||||| Stash base
-    catppuccin.url = "github:catppuccin/nix";
-    zig.url = "github:mitchellh/zig-overlay";
-    ghostty.url = "github:ghostty-org/ghostty";
-=======
     catppuccin = {
       inputs.nixpkgs.follows = "nixpkgs";
       url = "github:catppuccin/nix";
->>>>>>> Stashed changes
     };
 
     zig = {
       url = "github:mitchellh/zig-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
 
     ghostty = {
       url = "github:ghostty-org/ghostty";
@@ -94,7 +75,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-<<<<<<< Updated upstream
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -103,13 +83,7 @@
     webremote = {
       url = "github:caden-parajuli/webremote";
       inputs.nixpkgs.follows = "nixpkgs";
-||||||| Stash base
-=======
-    webremote = {
-      url = "github:caden-parajuli/webremote";
-      inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
->>>>>>> Stashed changes
     };
 
   };
@@ -180,6 +154,20 @@
             agenix.nixosModules.default
 
             webremote.nixosModule
+          ];
+        };
+
+        zora = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+
+          specialArgs = {
+            inherit inputs ghostty;
+          };
+
+          modules = [
+            ./hosts/zora/zora.nix
+
+            agenix.nixosModules.default
           ];
         };
       };
