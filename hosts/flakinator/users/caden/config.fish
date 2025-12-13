@@ -27,6 +27,10 @@ function denv
   end
 end
 
+function spawn
+  $argv &; disown; exit
+end
+
 # Stow dotfiles
 function stow-dots
   stow --dir=$DOTFILES --target=$HOME (path basename $DOTFILES/*)
@@ -36,15 +40,6 @@ end
 function nixrs
   sudo nixos-rebuild switch --flake ~/nix
   stow-dots
-end
-
-function hyprlaunch
-  exec uwsm start hyprland.desktop
-end
-
-if uwsm check may-start
-   and uwsm select
-  hyprlaunch
 end
 
 # Opam init

@@ -1,5 +1,5 @@
 servers:
 - name: Nixus
   password: Th0rn@x1
-  url: http://jellyfin.nixus.local
+  url: http://jellyfin.home.arpa
   username: caden

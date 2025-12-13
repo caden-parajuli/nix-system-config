@@ -22,15 +22,14 @@ return {
 
         require("fidget").setup({})
 
-        local lspconfig = require("lspconfig")
-        local configs = require("lspconfig")
-
         -- Lua
-        lspconfig.lua_ls.setup {
+        vim.lsp.config('lua_ls', {
             on_init = function(client)
-                local path = client.workspace_folders[1].name
-                if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
-                    return
+                if client.workspace_folders and #(client.workspace_folders) > 1 then
+                  local path = client.workspace_folders[1].name
+                  if vim.loop.fs_stat(path .. '/.luarc.json') or vim.loop.fs_stat(path .. '/.luarc.jsonc') then
+                      return
+                  end
                 end
 
                 client.config.settings.Lua = vim.tbl_deep_extend('force', client.config.settings.Lua, {
@@ -52,10 +51,11 @@ return {
                     diagnostics = { disable = { 'missing-fields' } },
                 }
             }
-        }
+        })
+        vim.lsp.enable('lua_ls')
 
         -- Nix
-        lspconfig.nil_ls.setup {
+        vim.lsp.config('nil_ls', {
             autostart = true,
             settings = {
                 ['nil'] = {
@@ -65,23 +65,14 @@ return {
                     },
                 },
             },
-        }
+        })
+        vim.lsp.enable('nil_ls')
 
         -- WGSL
-        if not configs.wgsl_analyzer then
-            configs.wgsl_analyzer = {
-                default_config = {
-                    cmd = { "~/.cargo/bin/wgsl_analyzer" },
-                    filetypes = { "wgsl" },
-                    root_dir = lspconfig.util.root_pattern(".git", "wgsl"),
-                    settings = {},
-                },
-            }
-        end
-        lspconfig.wgsl_analyzer.setup({ capabilities = capabilities, })
+        -- vim.lsp.config('wgsl_analyzer', { capabilities = capabilities, })
 
         -- C (clangd)
-        lspconfig.clangd.setup({
+        vim.lsp.config('clangd', {
             on_init = function(client)
                 local arg_file_name = '.clangd-args'
                 local path = client.workspace_folders[1].name
@@ -103,21 +94,29 @@ return {
                 ['clangd'] = { cmd = {} }
             }
         })
+        vim.lsp.enable('clangd')
 
         -- OCaml
-        lspconfig.ocamllsp.setup({})
+        vim.lsp.config('ocamllsp', {
+            cmd = { "ocamllsp", "--fallback-read-dot-merlin" },
+            filetypes = { "ocaml", "menhir", "ocamlinterface", "ocamllex", "reason", "dune" }
+        })
+        vim.lsp.enable('ocamllsp')
 
         -- Gleam
-        lspconfig.gleam.setup({})
+        vim.lsp.config('gleam',{})
+        vim.lsp.enable('gleam')
 
         -- Go
-        lspconfig.gopls.setup({})
+        vim.lsp.config('gopls',{})
+        vim.lsp.enable('gopls')
 
         -- Nim
-        lspconfig.nim_langserver.setup({})
+        vim.lsp.config('nim_langserver',{})
+        vim.lsp.enable('nim_langserver')
 
         -- Zig
-        lspconfig.zls.setup({
+        vim.lsp.config('zls', {
             settings = {
                 zls = {
                     enable_snippets = true,
@@ -127,16 +126,17 @@ return {
                 }
             }
         })
+        vim.lsp.enable('zls')
 
-        -- Haskell
-        lspconfig.hls.setup({
-            filetypes = { 'haskell', 'lhaskell', 'cabal' },
-            root_dir = lspconfig.util.root_pattern("hie.yaml", "stack.yaml", "cabal.project", "*.cabal", "package.yaml",
-                ".git"),
-        })
+        -- We have haskell-tools
+        -- -- Haskell
+        -- vim.lsp.config('hls',{
+        --     filetypes = { 'haskell', 'lhaskell', 'cabal' },
+        -- })
+        -- vim.lsp.enable('hls')
 
         -- Python (pylsp)
-        lspconfig.pylsp.setup({
+        vim.lsp.config('pylsp',{
             cmd = { "uv", "run", "pylsp" },
             settings = {
                 pylsp = {
@@ -159,7 +159,8 @@ return {
                 }
             }
         })
-        -- lspconfig.pyright.setup({
+        vim.lsp.enable('pylsp')
+        -- vim.lsp.config('pyright',{
         --     capabilities = (function()
         --         local caps = vim.lsp.protocol.make_client_capabilities()
         --         caps.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
@@ -177,54 +178,65 @@ return {
         --         },
         --     },
         -- })
-        -- lspconfig.ruff.setup({
+        -- vim.lsp.config('ruff',{
         --     on_attach = function(client, _) client.server_capabilities.hoverProvider = false end,
         -- })
 
         -- Lean
-        lspconfig.leanls.setup({})
+        vim.lsp.config('leanls',{})
+        vim.lsp.enable('leanls')
 
         -- Java
-        lspconfig.jdtls.setup({})
+        vim.lsp.config('jdtls',{})
+        vim.lsp.enable('jdtls')
 
         -- Emmet HTML
-        lspconfig.emmet_language_server.setup({
+        vim.lsp.config('emmet_language_server',{
             filetypes = { "css", "eruby", "html", "less", "sass", "scss" },
         })
+        vim.lsp.enable('emmet_language_server')
 
         -- JSON
-        lspconfig.jsonls.setup({
+        vim.lsp.config('jsonls', {
             init_options = {
                 provideFormatter = true
             }
         })
+        vim.lsp.enable('jsonls')
 
         -- LaTeX
-        lspconfig.texlab.setup({})
+        vim.lsp.config('texlab', {})
+        vim.lsp.enable('texlab')
 
         -- Typst
-        lspconfig.tinymist.setup({
+        vim.lsp.config('tinymist', {
+            cmd = { "tinymist" },
+            filetypes = { "typst" },
             settings = {
                 formatterMode = "typstyle",
                 exportPdf = "onType",
                 semanticTokens = "disable"
             }
         })
+        vim.lsp.enable('tinymist')
 
         -- Scala (metals)
-        lspconfig.metals.setup{
+        vim.lsp.config('metals', {
             -- message_level = 2,
             init_options = {
                 statusBarProvider = "",
             },
-        }
+        })
+        vim.lsp.enable('metals')
 
         -- QML
-        lspconfig.qmlls.setup{
+        vim.lsp.config('qmlls', {
             cmd = {"qmlls", "-E"}
-        }
+        })
+        vim.lsp.enable('qmlls')
 
-        lspconfig.astro.setup{}
+        vim.lsp.config('astro', {})
+        vim.lsp.enable('astro')
 
         -- Completion
         local cmp_select = { behavior = cmp.SelectBehavior.Select }
@@ -274,7 +286,7 @@ return {
                 focusable = false,
                 style = "minimal",
                 border = "rounded",
-                source = "always",
+                source = true,
                 header = "",
                 prefix = "",
             },

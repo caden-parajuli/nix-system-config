@@ -1,4 +1,9 @@
 return {
+    -- My DCS plugin
+    {
+        dir = "~/projects/dcs.nvim",
+        opts = {}
+    },
     -- telescope
     {
         'nvim-telescope/telescope.nvim',
@@ -40,7 +45,7 @@ return {
     -- RustaceanVim Rust LSP
     {
         'mrcjkb/rustaceanvim',
-        version = '^4', -- Recommended
+        version = '^6', -- Recommended
         lazy = false,   -- This plugin is already lazy
     },
 
@@ -223,22 +228,21 @@ return {
     },
 
     -- Lean
-    {
-        'Julian/lean.nvim',
-        event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
-
-        dependencies = {
-            'neovim/nvim-lspconfig',
-            'nvim-lua/plenary.nvim',
-            'hrsh7th/nvim-cmp',
-            'AndrewRadev/switch.vim'
-        },
-
-        opts = {
-            lsp = {},
-            mappings = true,
-        }
-    },
+    -- {
+    --     'Julian/lean.nvim',
+    --     event = { 'BufReadPre *.lean', 'BufNewFile *.lean' },
+    --
+    --     dependencies = {
+    --         'nvim-lua/plenary.nvim',
+    --         'hrsh7th/nvim-cmp',
+    --         'AndrewRadev/switch.vim'
+    --     },
+    --
+    --     opts = {
+    --         lsp = {},
+    --         mappings = true,
+    --     }
+    -- },
 
     -- Agda
     {
@@ -323,14 +327,14 @@ return {
 
     -- Coq
     { "whonore/Coqtail", },
-    {
-        "tomtomjhj/coq-lsp.nvim",
-        config = function()
-            vim.g.loaded_coqtail = 1
-            vim.g["coqtail#supported"] = 0
-            require("coq-lsp").setup{}
-        end
-    },
+    -- {
+    --     "tomtomjhj/coq-lsp.nvim",
+    --     config = function()
+    --         vim.g.loaded_coqtail = 1
+    --         vim.g["coqtail#supported"] = 0
+    --         require("coq-lsp").setup{}
+    --     end
+    -- },
 
     -- Typst
     {
@@ -343,5 +347,32 @@ return {
                 ['websocat'] = "/etc/profiles/per-user/caden/bin/websocat"
             }
         },
+    },
+
+    -- Age encryption
+    {
+        "chrisgve/databox.nvim",
+        config = function()
+            local success, err = require("databox").setup({
+                private_key = "~/.age/keys.txt",
+                public_key = "age1yzqvcyt8x063p22psd6rdrhpcqpryd2m6y8ktdezdreu83ulavqsjftrf7",
+                -- Use rage
+                encryption_cmd = "rage -e -a -r %s",
+                decryption_cmd = "rage -d -i %s",
+            })
+
+            if not success then
+                vim.notify("Databox setup failed: " .. err, vim.log.levels.ERROR)
+            end
+        end,
+    },
+    {
+        'histrio/age-secret.nvim',
+        config = function()
+            require('age_secret').setup({
+                recipient = "age1yzqvcyt8x063p22psd6rdrhpcqpryd2m6y8ktdezdreu83ulavqsjftrf7",
+                identity = "~/.age/keys.txt",
+            })
+        end
     }
 }

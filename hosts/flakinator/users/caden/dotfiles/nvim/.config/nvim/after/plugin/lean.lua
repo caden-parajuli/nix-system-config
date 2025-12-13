@@ -17,7 +17,7 @@ local function on_attach(_, bufnr)
 	cmd('n', '<leader>q', vim.diagnostic.setloclist)
 end
 
-require('lean').setup {
-	lsp = { on_attach = on_attach },
-	mappings = true,
-}
+-- require('lean').setup {
+-- 	lsp = { on_attach = on_attach },
+-- 	mappings = true,
+-- }

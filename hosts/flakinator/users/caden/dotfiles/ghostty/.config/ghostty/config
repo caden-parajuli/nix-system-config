@@ -17,3 +17,10 @@ gtk-titlebar=false
 
 # Keybindings
 keybind = alt+t=new_window
+keybind = ctrl+bracket_left=text:\x1b
+keybind = ctrl+enter=text:unbind
+
+shell-integration = fish
+
+# window-inherit-working-directory = false
+working-directory = inherit

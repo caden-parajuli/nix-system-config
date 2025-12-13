@@ -1,4 +1,5 @@
 (defcfg
+  linux-dev /dev/input/by-path/platform-i8042-serio-0-event-kbd
   process-unmapped-keys yes
 )
 
@@ -32,8 +33,8 @@
 ;; Symbol layer
 (deflayer symbols
   _    _    _    _    _    _    _    _    _    _    _    _    _    del
-  _    @oct S-[  S-]  @dqu @dol @car =    +    -    @per _    _    S-\
-  @cap @exc [    @rbr @com /    \    @dot @lpa @rpa ;    _    _
+  _    @oct S-[  S-]  @dqu @exc @car =    +    -    @per _    _    S-\
+  @cap @dol [    @rbr @com /    \    @dot @lpa @rpa ;    _    _
   @shn @que @at  @und @and grv  @ast @col @lan @ran @que _
   _    _    _              _              _    _
 )

@@ -3,7 +3,6 @@
   pkgs,
   ghostty,
   zig,
-  quickshell,
   ...
 }:
 
@@ -12,7 +11,10 @@ let
 in
 rec {
   imports = [
+    ./editors.nix
     ./yazi.nix
+    ./art.nix
+    ./gaming.nix
   ];
 
   nix.settings = {
@@ -26,7 +28,6 @@ rec {
     kvantum.enable = false;
     hyprland.enable = false;
     hyprlock.enable = false;
-    waybar.enable = false;
   };
 
   programs = {
@@ -45,6 +46,7 @@ rec {
         vim = "nvim";
         nv = "nvim";
         n = "nvim";
+        e = "emacs -nw";
       };
     };
 
@@ -92,7 +94,7 @@ rec {
     carapace = {
       enable = true;
       enableNushellIntegration = true;
-      enableFishIntegration = false;
+      enableFishIntegration = true;
     };
 
     direnv = {
@@ -102,7 +104,7 @@ rec {
 
     zen-browser = {
       enable = true;
-      nativeMessagingHosts = [pkgs.firefoxpwa];
+      nativeMessagingHosts = [ pkgs.firefoxpwa ];
       policies = {
         AutofillAddressEnabled = true;
         AutofillCreditCardEnabled = false;
@@ -122,6 +124,22 @@ rec {
         };
       };
     };
+
+    obs-studio = {
+      enable = true;
+      plugins = with pkgs.obs-studio-plugins; [
+        obs-pipewire-audio-capture
+        advanced-scene-switcher
+      ];
+    };
+
+    rofi = {
+      enable = true;
+      package = pkgs.rofi;
+      plugins = with pkgs; [
+        rofi-calc
+      ];
+    };
   };
 
   dconf.settings = {
@@ -137,10 +155,6 @@ rec {
   qt = {
     enable = true;
     platformTheme.name = "qtct";
-    # style = {
-    #   package = pkgs.catppuccin-kvantum;
-    #   name = "kvantum";
-    # };
   };
 
   gtk = {
@@ -166,9 +180,8 @@ rec {
     sessionPath = [ "${homeDirectory}/.cargo/bin" ];
 
     sessionVariables = {
-      # STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${homeDirectory}/.steam/root/compatibilitytools.d";
-      XDG_CURRENT_DESKTOP = "Hyprland";
-      XDG_SESSION_DESKTOP = "Hyprland";
+      XDG_CURRENT_DESKTOP = "sway";
+      XDG_SESSION_DESKTOP = "sway";
       XDG_SESSION_TYPE = "wayland";
 
       # Firefox
@@ -188,9 +201,11 @@ rec {
     packages =
       let
         quickshellPackage = inputs.quickshell.packages.${pkgs.system}.default;
-        qtEnv = with pkgs.qt6; env "qt-custom-${qtbase.version}" [
-          qtdeclarative
-        ];
+        qtEnv =
+          with pkgs.qt6;
+          env "qt-custom-${qtbase.version}" [
+            qtdeclarative
+          ];
 
       in
       with pkgs;
@@ -231,10 +246,19 @@ rec {
         nixfmt-rfc-style
 
         # Python
-        python312
-        python312Packages.setuptools
-        python312Packages.pygments
-        python312Packages.pylatexenc
+        uv
+        (python313.withPackages (
+          ps: with ps; [
+            tkinter
+            pip
+            setuptools
+            tkinter
+            pygments
+            pylatexenc
+            glfw
+            pygame
+          ]
+        ))
 
         # Nim
         nim
@@ -246,7 +270,7 @@ rec {
         # Haskell
         haskellPackages.haskell-language-server
         haskellPackages.stack
-        haskell.compiler.ghc96
+        # haskell.compiler.ghc912
 
         # LaTeX
         texlab
@@ -264,62 +288,31 @@ rec {
         lldb
         valgrind
 
-        # Text editing
-        neovim
-        libreoffice-qt6-still
-
         stow
 
         #
         # GUI Apps
         #
 
-        alacritty
         foot
-        rofi-wayland
-        rofi-calc
-        # tauon
         vlc
-        jellyfin-tui
         xarchiver
         zathura
-        signal-desktop
-        blender
-        obs-studio
-        
-        # Alternative Browser
-        ungoogled-chromium
+        calibre
 
+        # Alternative Browsers
+        qutebrowser
+        ungoogled-chromium
 
         #
         # Gui app required tools
         #
 
-        # for waybar
-        font-awesome
         # For xarchiver
         p7zip
         unar
-        # For zathura
+        # For zathura (is this still necessary on Wayland?)
         xdotool
-
-        #Gaming
-        wine-staging
-        wine64Packages.waylandFull
-        winetricks
-        protonup-qt
-        bottles
-        fuse-overlayfs
-        bubblewrap
-        lutris
-        (retroarch.withCores (cores: with cores; [
-          snes9x
-          citra
-          dolphin
-
-          desmume # TODO: Get dumps for melonds
-        ]))
-        moonlight-qt
 
         #
         # Desktop tools
@@ -328,16 +321,23 @@ rec {
         # For Hyprland
         hyprpicker
         hyprsunset
+        hyprls
+
+        #Sway
+        wlsunset
+        gtklock
+        wayland
+        wayland-utils
+
+        # Clipboard
         wl-clipboard-rs
         wl-clip-persist
-        hyprls
         # Screenshot
         grim
         slurp
         imagemagick
         # Status
         avizo
-        waybar
         swaynotificationcenter
 
         # Email
@@ -355,18 +355,19 @@ rec {
 
         # Control
         playerctl
-        # nwg-displays
+        nwg-displays
         networkmanagerapplet
         pavucontrol
         easyeffects
         wireguard-ui
 
+        # VNC/RDP
+        remmina
+
         # Theming
         libsForQt5.qt5ct
         catppuccin-qt5ct
         dracula-theme
-        # libsForQt5.qtstyleplugin-kvantum
-        # kdePackages.qtstyleplugin-kvantum
 
         # Daemons
         nginx
@@ -376,7 +377,7 @@ rec {
         espflash
 
         # Reverse engineering / analysis
-        aflplusplus
+        # aflplusplus
         ghidra
 
         #
@@ -400,15 +401,14 @@ rec {
         sshs
         feh
         ffmpeg-full
-
-        # Nushell
-
-        # nushellPlugins.net
-        # nushellPlugins.gstat
+        jellyfin-tui
+        caligula
+        pastel
 
         # Networking
         dig
         inetutils
+        nmap
 
         # Deployment
         flyctl
@@ -422,4 +422,58 @@ rec {
   };
   systemd.user.sessionVariables = home.sessionVariables;
 
+  xdg = {
+    mimeApps = {
+      enable = true;
+      defaultApplications = {
+        "text/html" = "zen-twilight.desktop";
+        "text/plain" = "nvim.desktop.desktop";
+        "x-scheme-handler/http" = "zen-twilight.desktop";
+        "x-scheme-handler/https" = "zen-twilight.desktop";
+        "x-scheme-handler/unknown" = "nvim.desktop";
+        "application/octet-stream" = "nvim.desktop";
+        "text/x-csrc" = "nvim.desktop";
+        "text/x-chdr" = "nvim.desktop";
+        "text/x-csharp" = "nvim.desktop";
+        "text/x-python" = "nvim.desktop";
+        "inode/directory" = "yazi.desktop";
+      };
+    };
+
+    terminal-exec = {
+      enable = true;
+      settings = rec {
+        Hyprland = [
+          "com.mitchellh.ghostty.desktop"
+        ];
+        default = Hyprland;
+      };
+    };
+
+    portal = {
+      enable = true;
+      # wlr.enable = true;
+      extraPortals = [
+        pkgs.xdg-desktop-portal-wlr
+        pkgs.xdg-desktop-portal-gtk
+        # pkgs.xdg-desktop-portal-hyprland
+      ];
+      config = rec {
+        hyprland = {
+          default = [ "hyprland" ];
+          # "org.freedesktop.impl.portal.ScreenCast" = [
+          #   "gnome"
+          # ];
+        };
+        sway = {
+          default = [ "gtk" "wlr" ];
+          "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
+          "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
+        };
+        common = sway;
+      };
+
+      xdgOpenUsePortal = true;
+    };
+  };
 }

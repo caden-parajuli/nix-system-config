@@ -3,4 +3,7 @@ id_rsa
 id_ed25519
 id_nix
 id_bcemail
-**/nushell/history.txt
+
+secrets.lua
+
+**/.config/nushell/history.txt

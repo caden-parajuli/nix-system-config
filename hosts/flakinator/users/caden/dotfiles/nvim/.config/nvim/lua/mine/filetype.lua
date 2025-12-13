@@ -39,8 +39,18 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 
 -- OCaml
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-    pattern = "*.ml|*.mli",
+    pattern = "\\m*.ml\\|*.mli",
     callback = function()
+        vim.bo.filetype = "ocaml"
+        vim.opt_local.shiftwidth = 2
+        vim.opt_local.tabstop = 2
+    end,
+})
+-- ReasonML
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+    pattern = "\\m*.re\\|*.rei",
+    callback = function()
+        vim.bo.filetype = "reason"
         vim.opt_local.shiftwidth = 2
         vim.opt_local.tabstop = 2
     end,
@@ -56,7 +66,7 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
 
 --Makefiles
 vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-    pattern = "Makefile|makefile",
+    pattern = "Makefile\\|makefile",
     callback = function()
         vim.opt_local.shiftwidth = 8
         vim.opt_local.tabstop = 8

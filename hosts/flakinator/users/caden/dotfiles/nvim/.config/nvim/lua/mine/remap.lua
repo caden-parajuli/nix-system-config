@@ -22,13 +22,17 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 
 vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 
--- This is going to get me cancelled
+-- Bad habits
 vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("i", "<M-h>", "<Left>")
 vim.keymap.set("i", "<M-j>", "<Down>")
 vim.keymap.set("i", "<M-k>", "<Up>")
 vim.keymap.set("i", "<M-l>", "<Right>")
 
+-- Colemak (C-o is used for Harpoon, and C-y is physically the same as C-o on QWERTY)
+vim.keymap.set("n", "<C-y>", "<C-o>")
+
+-- Sessionizer
 vim.keymap.set("n", "<M-m>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<leader>ff", function()
     require("conform").format({ async = true, lsp_fallback = true })

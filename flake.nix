@@ -27,13 +27,22 @@
     };
 
     agenix = {
-      url = "github:ryantm/agenix";
+      url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     catppuccin.url = "github:catppuccin/nix";
-    zig.url = "github:mitchellh/zig-overlay";
-    ghostty.url = "github:ghostty-org/ghostty";
+
+    zig = {
+      url = "github:mitchellh/zig-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.zig.follows = "zig";
+    };
 
     yazi.url = "github:sxyazi/yazi";
     yazi-rs = {
@@ -58,6 +67,12 @@
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    webremote = {
+      url = "github:caden-parajuli/webremote";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
   };
 
   outputs =
