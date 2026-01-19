@@ -11,6 +11,8 @@
     ./greetd.nix
     ./virtualization.nix
     ./age.nix
+    ./gaming.nix
+    ./fonts.nix
   ];
 
   # Bootloader
@@ -75,6 +77,7 @@
       "adbusers"
       "dialout"
       # "docker"
+      "gamemode"
       "kvm"
       "libvirtd"
       "vboxusers"
@@ -238,9 +241,12 @@
     audio.enable = true;
     socketActivation = true;
 
+    pulse.enable = true;
+
     alsa.enable = true;
     alsa.support32Bit = true;
-    pulse.enable = true;
+
+    jack.enable = true;
   };
   systemd.user.services.pipewire.wantedBy = [ "default.target" ];
 
@@ -271,12 +277,20 @@
         unitConfig.DefaultDependencies = "no";
       };
     };
+    settings.Manager = {
+      DefaultTimeoutStopSec = "30s";
+    };
   };
 
-  security.pam.services.swaylock = {};
-  security.pam.services.gtklock = {};
+  security.pam.services.swaylock = { };
+  security.pam.services.gtklock = { };
   security.pam.loginLimits = [
-    { domain = "@users"; item = "rtprio"; type = "-"; value = 1; }
+    {
+      domain = "@users";
+      item = "rtprio";
+      type = "-";
+      value = 1;
+    }
   ];
 
   networking.firewall = {

@@ -19,5 +19,13 @@
     #   ]
     # ))
     moonlight-qt
+
+    steam-run
+    (heroic.override {
+      extraPkgs = pkgs: [
+        pkgs.gamescope
+        pkgs.gamemode
+      ];
+    })
   ];
 }

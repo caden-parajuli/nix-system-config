@@ -1,9 +1,4 @@
 return {
-    -- My DCS plugin
-    {
-        dir = "~/projects/dcs.nvim",
-        opts = {}
-    },
     -- telescope
     {
         'nvim-telescope/telescope.nvim',
@@ -24,6 +19,11 @@ return {
         dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim", },
     },
 
+    -- Jump anywhere
+    {
+        'pechorin/any-jump.vim',
+    },
+
     -- undo tree
     {
         'mbbill/undotree'
@@ -40,13 +40,6 @@ return {
         "L3MON4D3/LuaSnip",
         version = "v2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
         dependencies = { "rafamadriz/friendly-snippets" },
-    },
-
-    -- RustaceanVim Rust LSP
-    {
-        'mrcjkb/rustaceanvim',
-        version = '^6', -- Recommended
-        lazy = false,   -- This plugin is already lazy
     },
 
     -- telescope cht.sh integration
@@ -314,14 +307,15 @@ return {
             }
         },
         keys = {
-            { "<leader>.",  function() Snacks.scratch() end,            desc = "Toggle Scratch Buffer" },
-            { "<leader>S",  function() Snacks.scratch.select() end,     desc = "Select Scratch Buffer" },
-            { "<leader>bd", function() Snacks.bufdelete() end,          desc = "Delete Buffer" },
-            { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
-            { "<leader>gB", function() Snacks.gitbrowse() end,          desc = "Git Browse" },
-            { "<leader>un", function() Snacks.notifier.hide() end,      desc = "Dismiss All Notifications" },
-            { "<c-/>",      function() Snacks.terminal() end,           desc = "Toggle Terminal" },
-            { "<c-_>",      function() Snacks.terminal() end,           desc = "which_key_ignore" },
+            { "<leader>.",  function() Snacks.scratch() end,              desc = "Toggle Scratch Buffer" },
+            { "<leader>S",  function() Snacks.scratch.select() end,       desc = "Select Scratch Buffer" },
+            { "<leader>bd", function() Snacks.bufdelete() end,            desc = "Delete Buffer" },
+            { "<leader>cR", function() Snacks.rename.rename_file() end,   desc = "Rename File" },
+            { "<leader>gB", function() Snacks.gitbrowse() end,            desc = "Git Browse" },
+            { "<leader>un", function() Snacks.notifier.hide() end,        desc = "Dismiss All Notifications" },
+            { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "Show Notification History" },
+            { "<c-/>",      function() Snacks.terminal() end,             desc = "Toggle Terminal" },
+            { "<c-_>",      function() Snacks.terminal() end,             desc = "which_key_ignore" },
         },
     },
 

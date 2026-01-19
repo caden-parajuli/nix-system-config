@@ -3,6 +3,7 @@
   "Coqtail": { "branch": "main", "commit": "b12c31e8aa8d0f3bddd9a804b315a0de0823b989" },
   "LuaSnip": { "branch": "master", "commit": "458560534a73f7f8d7a11a146c801db00b081df0" },
   "age-secret.nvim": { "branch": "main", "commit": "9be5fbdac534422dc7d03eccb9d5af96f242e16f" },
+  "any-jump.vim": { "branch": "master", "commit": "f95674d9a4251ac02f452d5f1861e4422f4652c7" },
   "bg.nvim": { "branch": "main", "commit": "df916e4df2493ee302eea62185ed014ba7ca40d9" },
   "catppuccin": { "branch": "main", "commit": "f19cab18ec4dc86d415512c7a572863b2adbcc18" },
   "characterize": { "branch": "master", "commit": "885a00a3c21dd52ca8f2fd7d62850134934179d9" },

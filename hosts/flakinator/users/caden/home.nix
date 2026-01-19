@@ -18,8 +18,8 @@ rec {
   ];
 
   nix.settings = {
-    extra-substituters = [ "https://yazi.cachix.org" ];
-    extra-trusted-public-keys = [ "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k=" ];
+    extra-substituters = [ "https://yazi.cachix.org" "https://cache.iog.io" ];
+    extra-trusted-public-keys = [ "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k=" "hydra.iohk.io:f/Ea+s+dFdN+3Y/G+FDgSq+a5NEWhJGzdjvKNGv0/EQ=" ];
   };
 
   catppuccin = {
@@ -69,6 +69,7 @@ rec {
         vim = "nvim";
         nv = "nvim";
         n = "nvim";
+        e = "emacs -nw";
       };
 
       plugins = [
@@ -200,7 +201,7 @@ rec {
 
     packages =
       let
-        quickshellPackage = inputs.quickshell.packages.${pkgs.system}.default;
+        quickshellPackage = inputs.quickshell.packages.${pkgs.stdenv.hostPlatform.system}.default;
         qtEnv =
           with pkgs.qt6;
           env "qt-custom-${qtbase.version}" [
@@ -265,12 +266,13 @@ rec {
         nimlangserver
 
         # Zig
-        zig.packages.${pkgs.system}.master
+        zig.packages.${pkgs.stdenv.hostPlatform.system}.master
 
         # Haskell
-        haskellPackages.haskell-language-server
         haskellPackages.stack
         # haskell.compiler.ghc912
+        # see https://nixos.org/manual/nixpkgs/unstable/#haskell-language-server
+        # haskellPackages.haskell-language-server
 
         # LaTeX
         texlab
@@ -404,6 +406,7 @@ rec {
         jellyfin-tui
         caligula
         pastel
+        tree
 
         # Networking
         dig
@@ -412,9 +415,6 @@ rec {
 
         # Deployment
         flyctl
-
-        # Fonts
-        nerd-fonts.fira-code
 
         # Misc
         xdg-utils

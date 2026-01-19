@@ -22,6 +22,4 @@
       name = "FiraCode Nerd Font Mono";
     };
   };
-
 }
-

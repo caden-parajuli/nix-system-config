@@ -1,14 +1,5 @@
 {pkgs, ...}:
 {
-  # programs.uwsm = {
-  #   enable = true;
-  #   waylandCompositors = {
-  #     hyprland = {
-  #       prettyName = "Hyprland";
-  #       binPath = "/run/current-system/sw/bin/Hyprland";
-  #     };
-  #   };
-  # };
    
   environment.systemPackages = with pkgs; [
     vulkan-tools
@@ -28,23 +19,6 @@
     # steam-run
   ];
 
-  programs.hyprland = {
-    enable = true;
-    # withUWSM = true;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-  };
-
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        # command = "uwsm start hyprland.desktop";
-        command = "Hyprland";
-        user = "caden";
-      };
-      default_session = initial_session;
-    };
-  };
 
   # programs.steam = {
   #   enable = true;

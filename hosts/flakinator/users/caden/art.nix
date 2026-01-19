@@ -3,6 +3,7 @@
   home.packages = with pkgs; [
     # Drawing
     inkscape-with-extensions
+    krita
 
     # 3D CAD
     (blender.withPackages (ps: with ps; [

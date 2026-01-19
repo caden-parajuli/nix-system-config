@@ -1,0 +1,21 @@
+[Presets]
+lastLoadedOutputPreset=Nothing
+
+[StreamInputs]
+inputDevice=alsa_input.pci-0000_06_00.6.HiFi__Mic1__source
+
+[StreamOutputs]
+mostUsedPresets=Balance Sides,Nothing
+outputDevice=alsa_output.pci-0000_06_00.6.HiFi__Headphones__sink
+plugins=stereo_tools#0
+usedPresets=Balance Sides:3,Nothing:2
+visiblePage=pluginsPage
+visiblePlugin=stereo_tools#0
+
+[Window]
+height=1050
+outputAutoloadingFallbackPreset=Nothing
+presetsAutoloadInterval=500
+showTrayIcon=false
+visiblePresetSheetPage=autoloadingPage
+width=1920

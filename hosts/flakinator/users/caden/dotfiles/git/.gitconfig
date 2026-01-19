@@ -39,11 +39,17 @@
 
 [merge]
 	conflictstyle = zdiff3
-
+	tool = nvimdiff
+[mergetool]
+	prompt = false
+	keepBackup = false
+[mergetool "nvimdiff"]
+	layout = "LOCAL,BASE,REMOTE / MERGED"
 
 ; Delta
 [core]
 	pager = delta
+	excludesfile = /home/caden/.gitignore
 [interactive]
     diffFilter = delta --color-only
 [delta]

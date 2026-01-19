@@ -1,15 +1,5 @@
 {pkgs, ...}:
 {
-  # programs.uwsm = {
-  #   enable = true;
-  #   waylandCompositors = {
-  #     hyprland = {
-  #       prettyName = "Hyprland";
-  #       binPath = "/run/current-system/sw/bin/Hyprland";
-  #     };
-  #   };
-  # };
-   
   environment.systemPackages = with pkgs; [
     vulkan-tools
     vulkan-loader
@@ -17,7 +7,6 @@
     wine
     wayland
     rofi
-    # ghostty.packages.x86_64-linux.default
     foot
     lutris
     protonup-qt
@@ -25,26 +14,8 @@
     (bottles.override {
       removeWarningPopup = true;
     })
-    # steam-run
+    steam-run
   ];
-
-  programs.hyprland = {
-    enable = true;
-    # withUWSM = true;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-  };
-
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        # command = "uwsm start hyprland.desktop";
-        command = "Hyprland";
-        user = "caden";
-      };
-      default_session = initial_session;
-    };
-  };
 
   # programs.steam = {
   #   enable = true;
@@ -60,7 +31,7 @@
   # };
 
   services.sunshine = {
-    enable = true;
+    enable = false;
     package = pkgs.sunshine.override { cudaSupport = true; };
     autoStart = true;
     capSysAdmin = true;
@@ -76,15 +47,6 @@
           name = "Desktop";
           auto-detach = "true";
         }
-        {
-          name = "Bottles";
-          auto-detach = "true";
-          cmd = ''bottles'';
-        }
-        # {
-        #   name = "Blue Prince";
-        #   cmd = ''bottles-cli -b "Blue" -p "BLUE PRINCE"'';
-        # }
       ];
     };
   };

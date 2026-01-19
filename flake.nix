@@ -3,12 +3,20 @@
 
   nixConfig = {
     extra-experimental-features = "nix-command flakes";
-    trusted-substituters = [ "https://yazi.cachix.org" "https://devenv.cachix.org" "https://cache.garnix.io" ];
-    extra-substituters = [ "https://yazi.cachix.org" "https://devenv.cachix.org" "https://cache.garnix.io" ];
+    trusted-substituters = [
+      "https://yazi.cachix.org"
+      "https://devenv.cachix.org"
+      # "https://cache.garnix.io"
+    ];
+    extra-substituters = [
+      "https://yazi.cachix.org"
+      "https://devenv.cachix.org"
+      # "https://cache.garnix.io"
+    ];
     extra-trusted-public-keys = [
-      "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k=" 
+      "yazi.cachix.org-1:Dcdz63NZKfvUCbDGngQDAZq6kOroIrFoyO064uvLh8k="
       "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      # "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
     ];
   };
 
@@ -31,7 +39,7 @@
     agenix = {
       url = "github:yaxitech/ragenix";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
+      # inputs.home-manager.follows = "home-manager";
     };
 
     catppuccin = {
@@ -78,6 +86,7 @@
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
     };
 
     webremote = {
@@ -123,7 +132,12 @@
             home-manager.nixosModules.home-manager
             {
               home-manager.extraSpecialArgs = {
-                inherit inputs ghostty zig yazi;
+                inherit
+                  inputs
+                  ghostty
+                  zig
+                  yazi
+                  ;
               };
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;

@@ -10,6 +10,8 @@
     ./hardware/hardware.nix
     ./age.nix
 
+    ./modules/desktop.nix
+
     ./modules/lang-servers.nix
 
     ./modules/gaming.nix

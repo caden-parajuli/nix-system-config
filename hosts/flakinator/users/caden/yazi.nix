@@ -7,7 +7,7 @@
 {
   programs.yazi = {
     enable = true;
-    package = yazi.packages.${pkgs.system}.default;
+    package = yazi.packages.${pkgs.stdenv.hostPlatform.system}.default;
 
     plugins = {
       git = "${inputs.yazi-rs}/git.yazi";
