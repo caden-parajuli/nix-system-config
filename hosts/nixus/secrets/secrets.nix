@@ -20,5 +20,6 @@ in
   "cadenGmailPassword.age".publicKeys = keys;
   "paperlessPassword.age".publicKeys = keys;
   "porkbunKey.age".publicKeys = keys;
+  "forgejo-runner-token.age".publicKeys = keys;
 }
 

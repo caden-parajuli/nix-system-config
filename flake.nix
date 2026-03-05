@@ -55,6 +55,8 @@
     ghostty = {
       url = "github:ghostty-org/ghostty";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+      inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
       inputs.zon2nix.inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
       inputs.zig.follows = "zig";
@@ -90,7 +92,7 @@
     };
 
     webremote = {
-      url = "github:caden-parajuli/webremote";
+      url = "git+https://codeberg.org/caden-parajuli/webremote.git";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };

@@ -16,7 +16,7 @@
           # Public key of the server
           publicKey = "cwxNI/pISWlKLZFqkqRjKJInlC2IjNt0Q2TWlKjBdGI=";
           allowedIPs = [ "172.30.202.0/24" ];
-          endpoint = "34.230.82.168:51820";
+          endpoint = "173.255.238.237:51820";
           persistentKeepalive = 25;
         }
       ];

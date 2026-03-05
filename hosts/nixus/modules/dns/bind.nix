@@ -6,9 +6,13 @@
   services.bind = let
     hostip = "192.168.16.2";
     hostipv6 = "2601:19b:107f:4f20::2";
-    routerip = "192.168.16.1";
+
     wireguardip = "172.30.202.2";
     wireguardSubnet = "172.30.202.0/24";
+
+    zora_ip = "192.168.16.3";
+
+    routerip = "192.168.16.1";
 
     # nixus.local
     zone-nixus = pkgs.writeText "zone-nixus.local" ''
@@ -70,6 +74,8 @@
       ns1          IN      A       ${hostip}
 
       router       IN      A       ${routerip}
+
+      zora         IN      A       ${zora_ip}
 
       nixus        IN      A       ${hostip}
                    IN      AAAA    ${hostipv6}
@@ -136,6 +142,22 @@
       remote       IN      A       ${hostip}
       *            IN      A       ${hostip}
     '';
+
+    zone-wii = pkgs.writeText "zone-cfh.wapp.wii.com" ''
+      $TTL    1m
+      $ORIGIN cfh.wapp.wii.com.
+      @            IN      SOA     ns1 hostmaster (
+                                       1    ; Serial
+                                       3h   ; Refresh
+                                       10m  ; Update retry
+                                       1h   ; Expire
+                                       15m)  ; Negative Cache TTL
+                   IN      NS      ns1
+
+      @            IN      A       ${hostip}
+
+      ns1          IN      A       ${hostip}
+      '';
   in
     {
     enable = true;
@@ -174,6 +196,11 @@
         zone "cadenp.com" {
           type master;
           file "${zone-cadenp}";
+        };
+
+        zone "cfh.wapp.wii.com" {
+          type master;
+          file "${zone-wii}";
         };
       };
 

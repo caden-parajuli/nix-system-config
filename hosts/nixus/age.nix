@@ -11,6 +11,7 @@
       };
       paperlessPassword.file = ./secrets/paperlessPassword.age;
       porkbunKey.file = ./secrets/porkbunKey.age;
+      forgejo-runner-token.file = ./secrets/forgejo-runner-token.age;
     };
 
     identityPaths = [

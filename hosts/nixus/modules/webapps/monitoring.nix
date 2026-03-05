@@ -40,6 +40,8 @@
         http_addr = "0.0.0.0";
         enable_gzip = true;
       };
+      # We don't need this to be secret. The endpoint is not public.
+      security.secret_key = "SW2YcwTIb9zpOOhoPsMm";
       analytics.reporting_enabled = false;
     };
 

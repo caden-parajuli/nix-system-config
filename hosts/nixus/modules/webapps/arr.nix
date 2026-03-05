@@ -7,7 +7,6 @@
   services.lidarr = {
     enable = true;
     group = "media";
-    package = pkgs.lidarr;
   };
 
   services.sonarr = {

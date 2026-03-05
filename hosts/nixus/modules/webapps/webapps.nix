@@ -2,14 +2,16 @@
 {
   imports = [
     ./arr.nix
-    ./immich.nix
+    # ./immich.nix
     ./paperless.nix
     ./syncthing.nix
-    ./xwiki.nix
 
     ./webremote.nix
 
     ./monitoring.nix
+
+    # Wii
+    ./str2hax.nix
   ];
   users.groups.media.members = [
     "caden"
@@ -84,24 +86,24 @@
       recommendedProxySettings = true;
 
       # XWiki
-      virtualHosts."xwiki.home.arpa" = handleErrors {
-        locations."/" = {
-          extraConfig = ''return 301 http://xwiki.home.arpa/xwiki;'';
-        };
-        locations."/xwiki" = {
-          proxyPass = "http://127.0.0.1:8080/xwiki";
-          proxyWebsockets = true;
-        };
-      };
-      virtualHosts."xwiki.nixus.local" = handleErrors {
-        locations."/" = {
-          extraConfig = ''return 301 http://xwiki.nixus.local/xwiki;'';
-        };
-        locations."/xwiki" = {
-          proxyPass = "http://127.0.0.1:8080/xwiki";
-          proxyWebsockets = true;
-        };
-      };
+      # virtualHosts."xwiki.home.arpa" = handleErrors {
+      #   locations."/" = {
+      #     extraConfig = ''return 301 http://xwiki.home.arpa/xwiki;'';
+      #   };
+      #   locations."/xwiki" = {
+      #     proxyPass = "http://127.0.0.1:8080/xwiki";
+      #     proxyWebsockets = true;
+      #   };
+      # };
+      # virtualHosts."xwiki.nixus.local" = handleErrors {
+      #   locations."/" = {
+      #     extraConfig = ''return 301 http://xwiki.nixus.local/xwiki;'';
+      #   };
+      #   locations."/xwiki" = {
+      #     proxyPass = "http://127.0.0.1:8080/xwiki";
+      #     proxyWebsockets = true;
+      #   };
+      # };
 
       # Paperless
       virtualHosts."paperless.home.arpa" = handleErrors {
@@ -149,7 +151,7 @@
           "/radarr" = proxy 7878 {};
           "/readarr" = proxy 8787 {};
           "/bazarr" = proxy 6767 {};
-          "/transmission" = proxy 9091 {};
+          # "/transmission" = proxy 9091 {};
         };
       };
       virtualHosts."arr.nixus.local" = virtualHosts."arr.home.arpa";
@@ -196,15 +198,15 @@
   };
 
 
-  services.transmission = {
-    enable = true;
-    package = pkgs.transmission_4;
-    group = "media";
-    settings.umask = "774";
-    settings.download-dir = "/media/downloads";
-    downloadDirPermissions = "774";
-    webHome = pkgs.flood-for-transmission;
-  };
+  # services.transmission = {
+  #   enable = true;
+  #   package = pkgs.transmission_4;
+  #   group = "media";
+  #   settings.umask = "774";
+  #   settings.download-dir = "/media/downloads";
+  #   downloadDirPermissions = "774";
+  #   webHome = pkgs.flood-for-transmission;
+  # };
 
   # services.baikal = {
   #   enable = true; 

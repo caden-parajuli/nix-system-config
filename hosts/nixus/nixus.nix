@@ -2,6 +2,7 @@
   config,
   pkgs,
   inputs,
+  ghostty,
   ...
 }:
 
@@ -16,6 +17,9 @@
     ./modules/dns/bind.nix
     ./modules/dns/blocky.nix
     ./modules/dns/porkbun.nix
+    ./modules/wireguard.nix
+
+    ./modules/forgejo.nix
 
     ./modules/mail.nix
 
@@ -27,10 +31,10 @@
     ./modules/kodi.nix
     ./modules/youtube.nix
 
-    ./modules/wireguard.nix
+    # ./modules/klipper/klipper.nix
+    # ./modules/blender.nix
 
-    ./modules/klipper/klipper.nix
-    ./modules/blender.nix
+    ./modules/ios.nix
   ];
 
   nixpkgs.config.allowUnfreePredicate =
@@ -151,16 +155,14 @@
     usbutils
     pciutils
 
-    # Editing
-    vim
-    neovim
-    tree-sitter
-
     # Dev
     git
     pkg-config
     gcc
     delta
+    vim
+    neovim
+    tree-sitter
 
     # Administration
     tmux
@@ -171,7 +173,7 @@
     inputs.agenix.packages."${system}".default
 
     # Docker
-    devcontainer
+    # devcontainer
 
     # Manpages
     man-pages
@@ -179,9 +181,16 @@
 
     transmission_4
 
+    haskellPackages.stack
+
     # Desktop
     pavucontrol
     firefox
+
+    rofi
+    ghostty.packages.x86_64-linux.default
+    foot
+    vlc
   ];
 
   # udev rules

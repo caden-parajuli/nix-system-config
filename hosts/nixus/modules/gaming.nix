@@ -7,9 +7,6 @@
 
     wine
     wayland
-    rofi
-    # ghostty.packages.x86_64-linux.default
-    foot
     lutris
     protonup-qt
     protonup-rs
@@ -34,7 +31,7 @@
   # };
 
   services.sunshine = {
-    enable = true;
+    enable = false;
     package = pkgs.sunshine.override { cudaSupport = true; };
     autoStart = true;
     capSysAdmin = true;

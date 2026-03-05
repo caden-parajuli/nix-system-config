@@ -7,8 +7,8 @@ let
 
     let
       libs =
-        [ wayland libdecor xorg.libX11 xorg.libXi xorg.libXxf86vm xorg.libXfixes xorg.libXrender libxkbcommon libGLU libglvnd numactl SDL2 libdrm ocl-icd stdenv.cc.cc.lib openal ]
-        ++ lib.optionals (lib.versionAtLeast version "3.5") [ xorg.libSM xorg.libICE zlib ];
+        [ wayland libdecor libx11 libxi libxxf86vm libxfixes libxrender libxkbcommon libGLU libglvnd numactl SDL2 libdrm ocl-icd stdenv.cc.cc.lib openal ]
+        ++ lib.optionals (lib.versionAtLeast version "3.5") [ libsm libice zlib ];
     in
 
       stdenv.mkDerivation rec {
@@ -56,7 +56,7 @@ let
 
 in {
   environment.systemPackages = with pkgs; [
-    xorg.libX11
+    libx11
     blender_4_5
   ];
 }

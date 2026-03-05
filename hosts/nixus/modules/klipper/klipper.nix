@@ -110,7 +110,7 @@ in {
   users.groups.klipper.members = [ "klipper" ];
   services.mainsail = {
     enable = true;
-    hostName = "mainsail.nixus.local";
+    hostName = "mainsail.home.arpa";
   };
   # environment.systemPackages = [
   #   repFirmware
