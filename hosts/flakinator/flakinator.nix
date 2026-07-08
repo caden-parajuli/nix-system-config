@@ -13,6 +13,9 @@
     ./age.nix
     ./gaming.nix
     ./fonts.nix
+    ./ios.nix
+    ./nix-ld.nix
+    ./wm.nix
   ];
 
   # Bootloader
@@ -97,19 +100,22 @@
   nixpkgs.config.allowUnfreePredicate =
     pkg:
     builtins.elem (pkgs.lib.getName pkg) [
-      "android-sdk-cmdline-tools"
       "steam"
       "steam-unwrapped"
-      "libretro-snes9x"
 
       "unityhub"
       "corefonts"
       "rider"
-    ];
 
-  xdg.portal.wlr.enable = true;
+      "android-sdk-cmdline-tools"
+
+      "nrfconnect"
+      "segger-jlink"
+    ];
+  nixpkgs.config.segger-jlink.acceptLicense = true;
 
   environment.systemPackages = with pkgs; [
+    # Shell
     lshw
     fish
     nix-your-shell
@@ -117,19 +123,7 @@
     nix-prefetch
 
     perf
-
     pkg-config
-
-    # Desktop
-    wayland
-    wayland-protocols
-    wayland-utils
-    glfw
-    hyprpaper
-    hypridle
-    hyprpolkitagent
-    hyprland-qtutils
-    xdg-desktop-portal
 
     # Networking
     openconnect_openssl
@@ -141,77 +135,31 @@
     gparted
 
     # Age secrets
-    inputs.agenix.packages."${system}".default
+    inputs.agenix.packages."${stdenv.hostPlatform.system}".default
 
     # Manpages
     man-pages
     man-pages-posix
 
+    # ADB
+    android-tools
+
     openssl
 
     transmission_4-qt6
-
-    # Teaching
-    unityhub
-    jetbrains.rider
-    mono
   ];
 
-  # udev rules
-  services.udev = {
-    enable = true;
-    packages = with pkgs; [
-      # android-udev-rules
-    ];
-  };
+  services.udev.enable = true;
 
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
   };
 
-  # ADB for Android/AOSP-based OSs
-  programs.adb.enable = true;
-
-  # Hyprland
-  programs.uwsm = {
-    enable = true;
-    waylandCompositors = {
-      hyprland = {
-        prettyName = "Hyprland";
-        comment = "Hyprland compositor managed by UWSM";
-        binPath = "/run/current-system/sw/bin/Hyprland";
-      };
-      sway = {
-        prettyName = "Sway";
-        comment = "Sway compositor managed by UWSM";
-        binPath = "/run/current-system/sw/bin/sway";
-      };
-    };
-  };
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-  };
-  programs.hyprlock.enable = true;
-
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true;
-    extraOptions = [
-      # "--unsupported-gpu"
-    ];
-    extraPackages = with pkgs; [
-      swayidle
-      swaylock
-    ];
-  };
-
   # Use fish
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
-  documentation.man.generateCaches = false; # fix annoyingly slow rebuilds due to fish default
+  documentation.man.cache.enable = false; # fix annoyingly slow rebuilds due to fish default
 
   # Use Kanata for laptop keyboard
   services.kanata = {

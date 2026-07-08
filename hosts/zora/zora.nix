@@ -146,7 +146,7 @@
     iperf
 
     # Age secrets
-    inputs.agenix.packages."${system}".default
+    inputs.agenix.packages."${stdenv.hostPlatform.system}".default
 
     # Desktop
     pavucontrol
@@ -193,7 +193,7 @@
       n = "nvim";
     };
   };
-  documentation.man.generateCaches = false; # fix annoyingly slow rebuilds due to fish default
+  documentation.man.cache.enable = false; # fix annoyingly slow rebuilds due to fish default
 
   environment.sessionVariables = {
     EDITOR = "nvim";

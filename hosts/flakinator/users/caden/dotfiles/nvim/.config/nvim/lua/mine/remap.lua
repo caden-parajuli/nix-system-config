@@ -28,7 +28,9 @@ vim.keymap.set("n", "<M-p>", "<cmd>cprev<CR>")
 vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- Colemak (C-o is used for Harpoon, and C-y is physically the same as C-o on QWERTY)
+-- C-l is near QWERTY's C-i, since C-u is taken
 vim.keymap.set("n", "<C-y>", "<C-o>")
+vim.keymap.set("n", "<C-l>", "<C-i>")
 
 -- Sessionizer
 vim.keymap.set("n", "<M-m>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
@@ -52,3 +54,14 @@ vim.keymap.set("n", "<Leader>nf", ":lua require('neogen').generate()<CR>")
 
 -- LuaSnip
 vim.keymap.set('n', '<Leader>L', '<Cmd>lua require("luasnip.loaders.from_lua").load({paths = "~/.config/nvim/LuaSnip/"})<CR>')
+
+
+-- Terminal
+vim.keymap.set("n", "<Leader>st", function ()
+    vim.cmd.new()
+    vim.cmd.term()
+    vim.cmd.wincmd("L")
+    vim.api.nvim_win_set_width(0, 80)
+end)
+
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>")

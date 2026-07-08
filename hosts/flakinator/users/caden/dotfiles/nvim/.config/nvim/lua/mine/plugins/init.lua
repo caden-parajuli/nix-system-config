@@ -2,14 +2,29 @@ return {
     -- telescope
     {
         'nvim-telescope/telescope.nvim',
-        tag = '0.1.6',
+        tag = 'v0.2.2',
         dependencies = { 'nvim-lua/plenary.nvim' },
     },
 
     -- treesitter
     {
         'nvim-treesitter/nvim-treesitter',
-        build = ':TSUpdate'
+        dependencies = { 'neovim-treesitter/treesitter-parser-registry' },
+        branch = "main",
+        build = ':TSUpdate',
+        lazy = false,
+        config = function()
+            require("nvim-treesitter").setup({})
+        end,
+        init = function()
+            vim.api.nvim_create_autocmd('FileType', {
+                pattern = require('nvim-treesitter').get_installed(),
+                callback = function()
+                    vim.treesitter.start()
+                    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                end,
+            })
+        end,
     },
 
     -- harpoon
@@ -151,26 +166,15 @@ return {
     -- },
 
     -- Haskell Tools
-    {
-        'mrcjkb/haskell-tools.nvim',
-        version = '^4', -- Recommended
-        lazy = false,   -- This plugin is already lazy
-    },
+    -- {
+    --     'mrcjkb/haskell-tools.nvim',
+    --     version = '^4', -- Recommended
+    --     lazy = false,   -- This plugin is already lazy
+    -- },
 
     -- Octave
     {
         'mstanciu552/cmp-octave'
-    },
-
-    -- Flutter
-    {
-        'akinsho/flutter-tools.nvim',
-        lazy = false,
-        dependencies = {
-            'nvim-lua/plenary.nvim',
-            'stevearc/dressing.nvim', -- optional for vim.ui.select
-        },
-        config = true,
     },
 
     -- LaTeX
@@ -238,12 +242,26 @@ return {
     -- },
 
     -- Agda
+    -- {
+    --     "ashinkarov/nvim-agda",
+    --     config = function()
+    --         vim.g.nvim_agda_settings = {
+    --             agda_args = { "--include-path=/home/caden/bc/fall_2024/pl/ial" },
+    --         }
+    --     end
+    -- },
     {
-        "ashinkarov/nvim-agda",
+        'isovector/cornelis',
+        name = 'cornelis',
+        ft = 'agda',
+        -- build = 'stack install',
+        dependencies = { 'neovimhaskell/nvim-hs.vim', 'kana/vim-textobj-user' },
+        version = '*',
         config = function()
-            vim.g.nvim_agda_settings = {
-                agda_args = { "--include-path=/home/caden/bc/fall_2024/pl/ial" },
-            }
+            vim.g.cornelis_use_global_binary = 1
+            vim.g.cornelis_agda_prefix = "\\"
+            vim.g.cornelis_split_location = "right"
+            vim.g.cornelis_max_width = 80
         end
     },
 
@@ -262,6 +280,7 @@ return {
         end
     },
 
+    -- WhichKey
     {
         "folke/which-key.nvim",
         event = "VeryLazy",
@@ -291,7 +310,6 @@ return {
             -- or leave it empty to use the default settings
             -- refer to the configuration section below
             bigfile = { enabled = true },
-            dashboard = { enabled = true },
             notifier = {
                 enabled = true,
                 style = "fancy",
@@ -307,26 +325,25 @@ return {
             }
         },
         keys = {
-            { "<leader>.",  function() Snacks.scratch() end,              desc = "Toggle Scratch Buffer" },
-            { "<leader>S",  function() Snacks.scratch.select() end,       desc = "Select Scratch Buffer" },
-            { "<leader>bd", function() Snacks.bufdelete() end,            desc = "Delete Buffer" },
-            { "<leader>cR", function() Snacks.rename.rename_file() end,   desc = "Rename File" },
-            { "<leader>gB", function() Snacks.gitbrowse() end,            desc = "Git Browse" },
-            { "<leader>un", function() Snacks.notifier.hide() end,        desc = "Dismiss All Notifications" },
+            { "<leader>,",  function() Snacks.scratch() end,               desc = "Toggle Scratch Buffer" },
+            { "<leader>S",  function() Snacks.scratch.select() end,        desc = "Select Scratch Buffer" },
+            { "<leader>bd", function() Snacks.bufdelete() end,             desc = "Delete Buffer" },
+            { "<leader>cR", function() Snacks.rename.rename_file() end,    desc = "Rename File" },
+            { "<leader>gB", function() Snacks.gitbrowse() end,             desc = "Git Browse" },
+            { "<leader>un", function() Snacks.notifier.hide() end,         desc = "Dismiss All Notifications" },
             { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "Show Notification History" },
-            { "<c-/>",      function() Snacks.terminal() end,             desc = "Toggle Terminal" },
-            { "<c-_>",      function() Snacks.terminal() end,             desc = "which_key_ignore" },
+            { "<c-/>",      function() Snacks.terminal() end,              desc = "Toggle Terminal" },
+            { "<c-_>",      function() Snacks.terminal() end,              desc = "which_key_ignore" },
         },
     },
 
     -- Coq
-    { "whonore/Coqtail", },
     -- {
-    --     "tomtomjhj/coq-lsp.nvim",
-    --     config = function()
-    --         vim.g.loaded_coqtail = 1
-    --         vim.g["coqtail#supported"] = 0
-    --         require("coq-lsp").setup{}
+    --     "whonore/Coqtail",
+    --     config = function ()
+    --         vim.g.python3_host_prog = "pynvim-python"
+    --         vim.g.loaded_python3_provider = nil
+    --         vim.cmd("runtime autoload/provider/python3.vim")
     --     end
     -- },
 

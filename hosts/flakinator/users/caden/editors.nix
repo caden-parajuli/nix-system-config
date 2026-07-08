@@ -1,7 +1,10 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
+    # Nvim
+
     neovim
+    luajitPackages.luautf8 # Nvim Agda
     rage
 
     emacs-pgtk

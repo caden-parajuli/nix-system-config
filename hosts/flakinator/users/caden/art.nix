@@ -4,17 +4,18 @@
     # Drawing
     inkscape-with-extensions
     krita
+    libresprite
 
     # 3D CAD
-    (blender.withPackages (ps: with ps; [
-      pip
-      pyrr
-      pyopengl
-      pyopengl-accelerate
-      xxhash
-      glfw
-      pywayland
-    ]))
+    # (blender.withPackages (ps: with ps; [
+    #   pip
+    #   pyrr
+    #   pyopengl
+    #   pyopengl-accelerate
+    #   xxhash
+    #   glfw
+    #   pywayland
+    # ]))
     mcpp
 
     # Video editing

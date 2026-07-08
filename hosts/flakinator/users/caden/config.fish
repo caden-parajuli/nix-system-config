@@ -6,6 +6,9 @@ bind \cH backward-kill-path-component
 # Add rust to path
 fish_add_path ~/.cargo/bin
 
+# Custom bin dir
+fish_add_path ~/bin
+
 if command -q nix-your-shell
   nix-your-shell fish | source
 end

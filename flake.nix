@@ -58,7 +58,6 @@
       inputs.home-manager.follows = "home-manager";
       inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
       inputs.zon2nix.inputs.nixpkgs.follows = "nixpkgs";
-      inputs.flake-utils.follows = "flake-utils";
       inputs.zig.follows = "zig";
     };
 
@@ -92,11 +91,20 @@
     };
 
     webremote = {
-      url = "git+https://codeberg.org/caden-parajuli/webremote.git";
+      url = "github:caden-parajuli/webremote";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
 
+    river-kwm = {
+      url = "github:rowsred/river_kwm_modules_nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    localshare = {
+      url = "git+https://codeberg.org/caden-parajuli/localshare";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -111,6 +119,8 @@
       zig,
       quickshell,
       webremote,
+      river-kwm,
+      localshare,
       ...
     }:
     {
@@ -123,6 +133,7 @@
           };
           modules = [
             ./hosts/flakinator/flakinator.nix
+            ./overlays/default.nix
 
             disko.nixosModules.disko
             ./hosts/flakinator/disko-config.nix
@@ -139,6 +150,7 @@
                   ghostty
                   zig
                   yazi
+                  localshare
                   ;
               };
               home-manager.useGlobalPkgs = true;
@@ -148,7 +160,7 @@
               home-manager.users.caden.imports = [
                 ./hosts/flakinator/users/caden/home.nix
                 catppuccin.homeModules.catppuccin
-                inputs.zen-browser.homeModules.twilight-official
+                inputs.zen-browser.homeModules.twilight
               ];
             }
           ];
@@ -163,6 +175,7 @@
 
           modules = [
             ./hosts/nixus/nixus.nix
+            ./overlays/default.nix
 
             disko.nixosModules.disko
             ./hosts/nixus/disko-config.nix

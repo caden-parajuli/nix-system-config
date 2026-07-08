@@ -3,12 +3,10 @@
   pkgs,
   ghostty,
   zig,
+  localshare,
   ...
 }:
 
-let
-  system = "x86_64-linux";
-in
 rec {
   imports = [
     ./editors.nix
@@ -24,6 +22,7 @@ rec {
 
   catppuccin = {
     enable = true;
+    autoEnable = true;
 
     kvantum.enable = false;
     hyprland.enable = false;
@@ -36,18 +35,6 @@ rec {
     nix-index = {
       enable = true;
       enableFishIntegration = true;
-    };
-
-    nushell = {
-      enable = true;
-      extraConfig = "source /home/caden/.config/nushell/my_init.nu";
-      extraEnv = "$env.CARAPACE_BRIDGES = 'fish,bash,inshellisense'";
-      shellAliases = {
-        vim = "nvim";
-        nv = "nvim";
-        n = "nvim";
-        e = "emacs -nw";
-      };
     };
 
     zoxide = {
@@ -70,6 +57,8 @@ rec {
         nv = "nvim";
         n = "nvim";
         e = "emacs -nw";
+        sl = "ls";
+        lah = "ls -lah";
       };
 
       plugins = [
@@ -158,12 +147,13 @@ rec {
     platformTheme.name = "qtct";
   };
 
-  gtk = {
+  gtk = rec {
     enable = true;
     theme = {
       name = "Dracula";
       package = pkgs.dracula-theme;
     };
+    gtk4.theme = theme;
     cursorTheme = {
       package = pkgs.catppuccin-cursors.mochaMauve;
       name = "catppuccin-mocha-mauve-cursors";
@@ -244,12 +234,14 @@ rec {
 
         # Nix
         nil
-        nixfmt-rfc-style
+        nixfmt
 
         # Python
         uv
         (python313.withPackages (
           ps: with ps; [
+            pynvim
+
             tkinter
             pip
             setuptools
@@ -270,9 +262,9 @@ rec {
 
         # Haskell
         haskellPackages.stack
-        # haskell.compiler.ghc912
         # see https://nixos.org/manual/nixpkgs/unstable/#haskell-language-server
         # haskellPackages.haskell-language-server
+        # haskell.compiler.ghc912
 
         # LaTeX
         texlab
@@ -300,7 +292,6 @@ rec {
         vlc
         xarchiver
         zathura
-        calibre
 
         # Alternative Browsers
         qutebrowser
@@ -320,9 +311,7 @@ rec {
         # Desktop tools
         #
 
-        # For Hyprland
-        hyprpicker
-        hyprsunset
+        # Hyprland
         hyprls
 
         #Sway
@@ -351,9 +340,16 @@ rec {
         # Quickshell
         qtEnv
         quickshellPackage
+
+        # VNC
+        remmina
+
+        # Theming
+        libsForQt5.qt5ct
+        catppuccin-qt5ct
         qt6Packages.qtstyleplugin-kvantum
-        kdePackages.networkmanager-qt
         kdePackages.qt6ct
+        dracula-theme
 
         # Control
         playerctl
@@ -362,25 +358,15 @@ rec {
         pavucontrol
         easyeffects
         wireguard-ui
-
-        # VNC/RDP
-        remmina
-
-        # Theming
-        libsForQt5.qt5ct
-        catppuccin-qt5ct
-        dracula-theme
+        cyme
+        kdePackages.networkmanager-qt
 
         # Daemons
         nginx
 
-        # Hardware
-        kicad
-        espflash
-
-        # Reverse engineering / analysis
+        # Reverse engineering
         # aflplusplus
-        ghidra
+        # ghidra
 
         #
         # Terminal apps
@@ -395,15 +381,12 @@ rec {
         ran
         jq
         grc
-        yt-dlp
         psmisc
         tlrc
         git-open
         xxh
         sshs
         feh
-        ffmpeg-full
-        jellyfin-tui
         caligula
         pastel
         tree
@@ -413,11 +396,21 @@ rec {
         inetutils
         nmap
 
+        # Music
+        ffmpeg-full
+        jellyfin-tui
+        yt-dlp
+
         # Deployment
-        flyctl
+        # flyctl
 
         # Misc
         xdg-utils
+        inotify-tools
+        threadfin
+
+        # My tools
+        localshare.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
   };
   systemd.user.sessionVariables = home.sessionVariables;
@@ -437,6 +430,9 @@ rec {
         "text/x-csharp" = "nvim.desktop";
         "text/x-python" = "nvim.desktop";
         "inode/directory" = "yazi.desktop";
+
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document" = "writer.desktop";
+        "application/msword" = "writer.desktop";
       };
     };
 
@@ -470,6 +466,7 @@ rec {
           "org.freedesktop.impl.portal.Screenshot" = [ "wlr" ];
           "org.freedesktop.impl.portal.ScreenCast" = [ "wlr" ];
         };
+        river = sway;
         common = sway;
       };
 

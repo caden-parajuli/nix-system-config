@@ -19,6 +19,7 @@
       require("git"):setup()
     '';
 
+    shellWrapperName = "y";
     settings = {
       yazi = {
         plugin.prepend_previewers = [

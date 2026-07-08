@@ -5,9 +5,10 @@
     wine64Packages.waylandFull
     winetricks
     protonup-qt
-    bottles
     fuse-overlayfs
     bubblewrap
+
+    # bottles
     # lutris
     # (retroarch.withCores (
     #   cores: with cores; [
@@ -18,6 +19,7 @@
     #     desmume # TODO: Get dumps for melonds
     #   ]
     # ))
+
     moonlight-qt
 
     steam-run

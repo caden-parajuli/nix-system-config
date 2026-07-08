@@ -3,19 +3,20 @@
   #
   # Virt-manager
   #
-  programs.virt-manager.enable = true;
-  virtualisation.libvirtd = {
-    enable = true;
-    allowedBridges = [ "virbr0" ];
-    qemu = {
-      runAsRoot = false;
-      swtpm.enable = true;
-    };
-  };
+  # programs.virt-manager.enable = true;
+  # virtualisation.libvirtd = {
+  #   enable = true;
+  #   allowedBridges = [ "virbr0" ];
+  #   qemu = {
+  #     runAsRoot = false;
+  #     swtpm.enable = true;
+  #   };
+  # };
   users.groups.libvirtd.members = [ "caden" ];
   networking.firewall.trustedInterfaces = [ "virbr0" ];
 
   # Podman
+  virtualisation.containers.enable = true;
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
@@ -35,9 +36,11 @@
   virtualisation.waydroid.enable = true;
 
   environment.systemPackages = with pkgs; [
-    qemu
+    # qemu
     quickemu
 
+    dive
+    podman-tui
     distrobox
   ];
 }
